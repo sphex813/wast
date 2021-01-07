@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customEditText">
+        <item name="background">@drawable/bg_edit_text</item>
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+</resources>

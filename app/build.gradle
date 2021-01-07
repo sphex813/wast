@@ -1,0 +1,110 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.example.websharecaster"
+        minSdkVersion 28
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+
+    // Jetpack navigation
+    def nav_version = "2.3.2"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+//    implementation "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+
+
+    def compiler_version = "3.0.1"
+    kapt "com.android.databinding:compiler:$compiler_version"
+
+    // For ViewModel
+    def lifecycle_version = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+
+    // Koin for Kotlin apps
+    def koin_version = "2.2.1"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-workmanager:$koin_version"
+    implementation "org.koin:koin-androidx-compose:$koin_version"
+
+    // Retrofit HTTP calls
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    // XML converter factory for retrofit
+    implementation 'com.tickaroo.tikxml:core:0.8.13'
+    implementation 'com.tickaroo.tikxml:annotation:0.8.13'
+    implementation 'com.tickaroo.tikxml:retrofit-converter:0.8.13'
+    implementation 'com.tickaroo.tikxml:converter-htmlescape:0.8.13'
+    kapt 'com.tickaroo.tikxml:processor:0.8.13'
+    //Json converter factory
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    // Picasso for getting image from URL
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Chromecast
+    implementation "androidx.mediarouter:mediarouter:1.2.0"
+    implementation 'com.google.android.gms:play-services-cast-framework:19.0.0'
+
+    // lib for md5crypt function
+    implementation 'commons-codec:commons-codec:1.15'
+
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha05"
+
+    //Ffmpeg
+    implementation 'com.arthenica:mobile-ffmpeg-full:4.4'
+
+}
