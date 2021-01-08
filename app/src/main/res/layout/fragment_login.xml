@@ -9,11 +9,11 @@
 
         <variable
             name="clickListener"
-            type="com.example.websharecaster.listeners.SingleClickListener" />
+            type="com.example.wast.listeners.SingleClickListener" />
 
         <variable
             name="viewModel"
-            type="com.example.websharecaster.login.LoginViewModel" />
+            type="com.example.wast.login.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -11,11 +11,11 @@
 
         <variable
             name="clickListner"
-            type="com.example.websharecaster.search.MovieClickListener" />
+            type="com.example.wast.search.MovieClickListener" />
 
         <variable
             name="movie"
-            type="com.example.websharecaster.api.models.SccData" />
+            type="com.example.wast.api.models.SccData" />
 
         <variable
             name="movieImage"

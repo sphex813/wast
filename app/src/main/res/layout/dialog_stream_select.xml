@@ -6,11 +6,11 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.websharecaster.dialog.StreamSelectViewModel" />
+            type="com.example.wast.dialog.StreamSelectViewModel" />
 
         <variable
             name="adapter"
-            type="com.example.websharecaster.dialog.StreamSelectAdapter" />
+            type="com.example.wast.dialog.StreamSelectAdapter" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

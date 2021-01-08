@@ -7,15 +7,15 @@
     <data>
         <variable
             name="movieAdapter"
-            type="com.example.websharecaster.search.MovieAdapter" />
+            type="com.example.wast.search.MovieAdapter" />
 
         <variable
             name="viewModel"
-            type="com.example.websharecaster.SeriesViewModel" />
+            type="com.example.wast.SeriesViewModel" />
 
         <variable
             name="clickListener"
-            type="com.example.websharecaster.search.MovieClickListener" />
+            type="com.example.wast.search.MovieClickListener" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

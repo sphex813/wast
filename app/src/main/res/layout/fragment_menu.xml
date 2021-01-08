@@ -6,15 +6,15 @@
 
     <data>
 
-        <import type="com.example.websharecaster.models.SearchType" />
+        <import type="com.example.wast.models.SearchType" />
 
         <variable
             name="viewModel"
-            type="com.example.websharecaster.menu.MenuViewModel" />
+            type="com.example.wast.menu.MenuViewModel" />
 
         <variable
             name="clickListener"
-            type="com.example.websharecaster.menu.MenuClickListener" />
+            type="com.example.wast.menu.MenuClickListener" />
     </data>
 
     <ScrollView

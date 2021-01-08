@@ -7,7 +7,7 @@
 
         <variable
             name="clickListener"
-            type="com.example.websharecaster.dialog.StreamInfoClickListener" />
+            type="com.example.wast.dialog.StreamInfoClickListener" />
 
         <variable
             name="fileSize"
@@ -15,7 +15,7 @@
 
         <variable
             name="streamInfo"
-            type="com.example.websharecaster.api.models.StreamInfo" />
+            type="com.example.wast.api.models.StreamInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

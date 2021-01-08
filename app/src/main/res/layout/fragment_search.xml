@@ -7,11 +7,11 @@
     <data>
         <variable
             name="movieAdapter"
-            type="com.example.websharecaster.search.MovieAdapter" />
+            type="com.example.wast.search.MovieAdapter" />
 
         <variable
             name="viewModel"
-            type="com.example.websharecaster.search.SearchViewModel" />
+            type="com.example.wast.search.SearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
