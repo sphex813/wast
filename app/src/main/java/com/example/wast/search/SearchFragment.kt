@@ -1,9 +1,12 @@
 package com.example.wast.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,6 +22,7 @@ import com.example.wast.main.MainActivityViewModel
 import com.example.wast.models.LoadingState
 import com.example.wast.models.SearchType
 import com.example.wast.utils.HelpUtils
+import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,11 +68,6 @@ class SearchFragment() : Fragment(), MovieClickListener {
             }
         }
 
-        myViewModel.searchedFileName.observe(viewLifecycleOwner, {
-            // TODO na enter klavesnice
-            myViewModel.searchWithDebounce()
-        })
-
         myViewModel.data.observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)
         })
@@ -78,11 +77,32 @@ class SearchFragment() : Fragment(), MovieClickListener {
                 Toast.makeText(activity, it.msg!!, Toast.LENGTH_SHORT).show()
             }
         })
+
+        setKeyboardActionListener()
+    }
+
+    private fun setKeyboardActionListener() {
+        et_search.setOnEditorActionListener { v, actionId, event ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    myViewModel.search()
+                    closeKeyboard()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun closeKeyboard() {
+        val imm: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0)
     }
 
     override fun onItemClick(media: SccData) {
         if (media._source.children_count > 0) {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToSeriesFragment(media._id, HelpUtils.getMovieLink(media._source.i18n_info_labels)))
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToSeriesFragment(media._id,
+                HelpUtils.getMovieLink(media._source.i18n_info_labels)))
         } else {
             CoroutineScope(Dispatchers.IO).launch {
                 val streams: List<StreamInfo> = myViewModel.getStreams(media._id)
