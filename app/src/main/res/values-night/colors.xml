@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#FFC700</color>
-    <color name="primary_variant">#FFE174</color>
+    <color name="primary">#FFE174</color>
+    <color name="primary_variant">#FFC700</color>
     <color name="yellow_700">#9F7C00</color>
-    <color name="background">#FFFFFF</color>
-    <color name="background_variant">#F1F1F1</color>
+    <color name="background">#3C3C3C</color>
+    <color name="background_variant">#595959</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>

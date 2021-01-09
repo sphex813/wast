@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="customEditText">
         <item name="background">@drawable/bg_edit_text</item>
         <item name="android:drawablePadding">8dp</item>
+    </style>
+
+    <style name="menuIcon">
+        <item name="tint">@color/black</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
+    <style name="primaryButton">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:clickable">true</item>
     </style>
 </resources>

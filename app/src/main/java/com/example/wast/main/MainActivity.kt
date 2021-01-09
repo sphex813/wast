@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.mediarouter.app.MediaRouteButton
 import com.example.wast.R
 import com.example.wast.databinding.ActivityMainBinding
 import com.google.android.gms.cast.framework.CastButtonFactory
@@ -22,15 +23,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.chrome_cast_button, menu)
-        CastButtonFactory.setUpMediaRouteButton(this,
-            menu,
-            R.id.media_route_menu_item)
-
-        return true
+        val mMediaRouteButton = findViewById<MediaRouteButton>(R.id.media_route_button);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
     }
 }

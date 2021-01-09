@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/bg_edit_text"
+            android:drawableTint="@color/primary"
             android:drawableStart="@drawable/ic_user"
             android:drawablePadding="8dp"
             android:hint="Name"
@@ -64,6 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:drawableTint="@color/primary"
             android:background="@drawable/bg_edit_text"
             android:drawableStart="@drawable/ic_key"
             android:drawablePadding="8dp"
@@ -78,19 +80,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FF0000"
             android:text="Nesprávne prihlasovacie údaje"
+            android:textColor="#FF0000"
             android:visibility="@{viewModel.isLoginValid ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="@+id/button"
             tools:text="Nesprávne prihlasovacie údaje" />
 
-        <Button
+        <TextView
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:onClick="@{() -> clickListener.onClick()}"
             android:text="Prihlásiť sa"
+            android:background="@drawable/bg_primary_button"
+            style="@style/primaryButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

@@ -108,7 +108,7 @@ interface WebApi {
         @Url url: String = SCC_URL_FILTER + "search",
         @Query("value") value: String,
         @Query("type") type: String = "*",
-        @Query("sort") sort: String = "playCount",
+        @Query("sort") sort: String = "score",
         @Query("order") order: String = "desc",
         @Query("access_token") access_token: String = "th2tdy0no8v1zoh1fs59",
     ): Response<SccResponse>
