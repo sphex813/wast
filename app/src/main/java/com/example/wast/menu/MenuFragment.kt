@@ -37,7 +37,7 @@ class MenuFragment : Fragment(), MenuClickListener {
     }
 
     fun navigate(searchType: SearchType) {
-        findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToSearchFragment(searchType))
+        findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToSearchFragment())
 
     }
 }

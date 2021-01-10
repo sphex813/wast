@@ -60,7 +60,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 //    implementation "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
-
     def compiler_version = "3.0.1"
     kapt "com.android.databinding:compiler:$compiler_version"
 

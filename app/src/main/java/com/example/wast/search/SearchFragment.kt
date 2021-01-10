@@ -20,7 +20,6 @@ import com.example.wast.databinding.FragmentSearchBinding
 import com.example.wast.dialog.StreamSelectDialog
 import com.example.wast.main.MainActivityViewModel
 import com.example.wast.models.LoadingState
-import com.example.wast.models.SearchType
 import com.example.wast.utils.HelpUtils
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +35,9 @@ class SearchFragment() : Fragment(), MovieClickListener {
     private val myViewModel: SearchViewModel by viewModel()
     private val movieAdapter = MovieAdapter(this)
     private var movie: SccData? = null
-    private val args: SearchFragmentArgs by navArgs()
+    val imm: InputMethodManager by lazy {
+        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,15 +60,15 @@ class SearchFragment() : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        when (args.searchType) {
-            SearchType.MOVIES -> myViewModel.getMovies()
-            SearchType.MOVIES_DUBBED -> myViewModel.getMoviesCzsk()
-            SearchType.SHOWS -> myViewModel.getTvshows()
-            SearchType.SHOWS_DUBBED -> myViewModel.getTvshowsCzsk()
-            SearchType.DEFAULT -> {
-            }
-        }
-
+//        when (args.searchType) {
+//            SearchType.MOVIES -> myViewModel.getMovies()
+//            SearchType.MOVIES_DUBBED -> myViewModel.getMoviesCzsk()
+//            SearchType.SHOWS -> myViewModel.getTvshows()
+//            SearchType.SHOWS_DUBBED -> myViewModel.getTvshowsCzsk()
+//            SearchType.DEFAULT -> {
+//            }
+//        }
+        focusSearchEditText()
         myViewModel.data.observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)
         })
@@ -79,6 +80,11 @@ class SearchFragment() : Fragment(), MovieClickListener {
         })
 
         setKeyboardActionListener()
+    }
+
+    private fun focusSearchEditText() {
+        et_search.requestFocus()
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
     private fun setKeyboardActionListener() {
@@ -95,7 +101,6 @@ class SearchFragment() : Fragment(), MovieClickListener {
     }
 
     private fun closeKeyboard() {
-        val imm: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0)
     }
 

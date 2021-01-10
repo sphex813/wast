@@ -25,9 +25,6 @@
         <action
             android:id="@+id/action_searchFragment_to_seriesFragment"
             app:destination="@id/seriesFragment" />
-        <argument
-            android:name="searchType"
-            app:argType="com.example.wast.models.SearchType" />
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
@@ -71,4 +68,7 @@
             app:argType="string"
             android:defaultValue="null" />
     </fragment>
+    <action
+        android:id="@+id/action_global_searchFragment"
+        app:destination="@id/searchFragment" />
 </navigation>

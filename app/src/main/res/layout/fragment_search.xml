@@ -43,6 +43,7 @@
                     android:background="@drawable/bg_edit_text"
                     android:drawableStart="@drawable/ic_search"
                     android:drawablePadding="8dp"
+
                     android:hint="Search"
                     android:imeOptions="actionSearch"
                     android:singleLine="true"
