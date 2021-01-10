@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="clickListener"
+            type="com.example.wast.listeners.SingleClickListener" />
 
         <variable
             name="viewModel"
@@ -16,7 +19,7 @@
         tools:context=".main.MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment"
+            android:id="@+id/fragment_container"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -32,6 +35,7 @@
             android:id="@+id/include"
             layout="@layout/menu"
             android:layout_width="0dp"
+            app:clickListener="@{clickListener}"
             android:layout_height="55dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

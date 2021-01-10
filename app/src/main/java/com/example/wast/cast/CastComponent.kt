@@ -36,10 +36,16 @@ class CastComponent : KoinComponent {
         movie: SccData,
         link: String,
     ) {
+        if(link.isNullOrEmpty()){
+            //TODO nenasiel sa link
+            return
+        }
         if (castContext.sessionManager.currentCastSession == null) {
             //TODO pripoj na chromecast
             return
         }
+
+
         val remoteMediaClient: RemoteMediaClient =
             castContext.sessionManager.currentCastSession.getRemoteMediaClient()
                 ?: return
@@ -64,12 +70,13 @@ class CastComponent : KoinComponent {
     }
 
     private fun buildMediaInfo(movie: SccData, link: String): MediaInfo? {
+
         val frenchAudio = MediaTrack.Builder(1, MediaTrack.TYPE_AUDIO)
             .setName("French Audio")
             .setContentId("trk0001")
             .setLanguage("fr")
             .build()
-        val info: MediaInformation = FFprobe.getMediaInformation(link)
+//        val info: MediaInformation = FFprobe.getMediaInformation(link)
         val path: String = app.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString() + "/webshare.mp4"
         val file = File(path)
         file.delete()
@@ -108,8 +115,8 @@ class CastComponent : KoinComponent {
     private fun setMovieMetaData(movie: SccData): MediaMetadata {
         val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
         movieMetadata.putString(MediaMetadata.KEY_TITLE, movie._source.info_labels.originaltitle)
-        movie._source.i18n_info_labels.get(0).art?.apply {
-            movieMetadata.addImage(WebImage(Uri.parse(this.poster)))
+        movie._source.i18n_info_labels.get(0).art?.poster?.apply {
+            movieMetadata.addImage(WebImage(Uri.parse(this)))
         }
         //TODO dorbit parent obrazok aj pre cast serialu
         //movieMetadata.addImage(WebImage(Uri.parse(movie._source?.i18n_info_labels?.get(0)?.art?.poster)))

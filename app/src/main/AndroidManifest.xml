@@ -24,7 +24,7 @@
         <activity
             android:name="com.example.wast.main.MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.Wast">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="clickListener"
+            type="com.example.wast.listeners.SingleClickListener" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="55dp">
@@ -47,6 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> clickListener.onClick()}"
             android:src="@drawable/bg_menu_circle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
