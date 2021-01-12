@@ -6,7 +6,7 @@
     <data>
         <variable
             name="clickListener"
-            type="com.example.wast.listeners.SingleClickListener" />
+            type="com.example.wast.listeners.MenuClickListener" />
 
         <variable
             name="viewModel"

@@ -40,10 +40,9 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/bg_edit_text"
+                    android:background="@drawable/bg_search_et"
                     android:drawableStart="@drawable/ic_search"
                     android:drawablePadding="8dp"
-
                     android:hint="Search"
                     android:imeOptions="actionSearch"
                     android:singleLine="true"
@@ -51,6 +50,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -73,14 +73,12 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:indeterminate="true"
+            android:indeterminateTint="@color/primary"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:setupVisibility="@{viewModel.loading}" />
 
 

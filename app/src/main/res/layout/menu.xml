@@ -7,7 +7,7 @@
 
         <variable
             name="clickListener"
-            type="com.example.wast.listeners.SingleClickListener" />
+            type="com.example.wast.listeners.MenuClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +31,7 @@
             android:layout_height="0dp"
             android:layout_marginLeft="24dp"
             android:clickable="true"
+            android:onClick="@{() -> clickListener.firstMenuButtonClick()}"
             android:src="@drawable/ic_logout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
@@ -42,7 +43,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
-            android:src="@drawable/ic_home"
+            android:onClick="@{() -> clickListener.homeMenuButtonClick()}"
+            android:src="@drawable/menu_button_home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toStartOf="@+id/circle"
@@ -55,7 +57,7 @@
             android:layout_height="80dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> clickListener.onClick()}"
+            android:onClick="@{() -> clickListener.searchMenuButtonClick()}"
             android:src="@drawable/bg_menu_circle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +98,8 @@
             android:layout_height="0dp"
             android:layout_marginRight="24dp"
             android:clickable="true"
-            android:src="@drawable/ic_settings"
+            android:onClick="@{() -> clickListener.lastMenuButtonClick()}"
+            android:src="@drawable/menu_button_settings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="@+id/view"

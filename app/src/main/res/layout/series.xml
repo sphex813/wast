@@ -28,14 +28,14 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> clickListner.onItemClick(movie)}">
+        android:layout_marginBottom="0dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> clickListner.onItemClick(movie)}"
             app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +51,7 @@
                     android:id="@+id/iv_movie"
                     android:layout_width="0dp"
                     android:layout_height="80dp"
-                    android:background="@color/primary"
+                    android:background="@color/background_variant"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

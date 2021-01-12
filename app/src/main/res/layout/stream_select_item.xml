@@ -10,6 +10,10 @@
             type="com.example.wast.dialog.StreamInfoClickListener" />
 
         <variable
+            name="resolution"
+            type="String" />
+
+        <variable
             name="fileSize"
             type="String" />
 
@@ -35,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{streamInfo.video[0].codec}"
+            android:textColor="@{streamInfo.video[0].codec.equals(`MPEG4`) || streamInfo.video[0].codec.equals(`HEVC`) ? @color/red : @android:color/tab_indicator_text}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="H264" />
@@ -76,6 +81,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView2"
             tools:text="SK" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{resolution}"
+            app:layout_constraintEnd_toEndOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

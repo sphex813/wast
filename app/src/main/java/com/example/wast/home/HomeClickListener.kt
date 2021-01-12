@@ -1,7 +1,7 @@
-package com.example.wast.menu
+package com.example.wast.home
 
 import com.example.wast.models.SearchType
 
-interface MenuClickListener {
+interface HomeClickListener {
     fun onClick(searchType: SearchType)
 }

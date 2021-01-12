@@ -2,12 +2,12 @@
 <resources>
 
     <style name="customEditText">
-        <item name="background">@drawable/bg_edit_text</item>
+        <item name="background">@drawable/bg_search_et</item>
         <item name="android:drawablePadding">8dp</item>
     </style>
 
     <style name="menuIcon">
-        <item name="tint">@color/text_color</item>
+<!--        <item name="tint">@color/text_color</item>-->
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>

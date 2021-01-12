@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wast.models.LoadingState
 import com.example.wast.api.WebApi
 import com.example.wast.api.WebRepository
 import com.example.wast.api.models.SccData
@@ -12,6 +11,7 @@ import com.example.wast.api.models.SccResponse
 import com.example.wast.api.models.StreamInfo
 import com.example.wast.cast.CastComponent
 import com.example.wast.datastore.LocalStorage
+import com.example.wast.models.LoadingState
 import com.example.wast.utils.Coroutines
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

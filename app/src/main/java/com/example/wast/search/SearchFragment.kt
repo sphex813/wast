@@ -18,8 +18,11 @@ import com.example.wast.api.models.SccData
 import com.example.wast.api.models.StreamInfo
 import com.example.wast.databinding.FragmentSearchBinding
 import com.example.wast.dialog.StreamSelectDialog
+import com.example.wast.listeners.OnSearchListener
+import com.example.wast.main.MainActivity
 import com.example.wast.main.MainActivityViewModel
 import com.example.wast.models.LoadingState
+import com.example.wast.models.SearchType
 import com.example.wast.utils.HelpUtils
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +37,7 @@ class SearchFragment() : Fragment(), MovieClickListener {
     val mainViewModel by sharedViewModel<MainActivityViewModel>()
     private val myViewModel: SearchViewModel by viewModel()
     private val movieAdapter = MovieAdapter(this)
+    private val args: SearchFragmentArgs by navArgs()
     private var movie: SccData? = null
     val imm: InputMethodManager by lazy {
         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -59,16 +63,17 @@ class SearchFragment() : Fragment(), MovieClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        when (args.searchType) {
-//            SearchType.MOVIES -> myViewModel.getMovies()
-//            SearchType.MOVIES_DUBBED -> myViewModel.getMoviesCzsk()
-//            SearchType.SHOWS -> myViewModel.getTvshows()
-//            SearchType.SHOWS_DUBBED -> myViewModel.getTvshowsCzsk()
-//            SearchType.DEFAULT -> {
-//            }
-//        }
-        focusSearchEditText()
+        if (myViewModel.data.value == null) {
+            when (args.searchType) {
+                SearchType.MOVIES -> myViewModel.getMovies()
+                SearchType.MOVIES_DUBBED -> myViewModel.getMoviesCzsk()
+                SearchType.SHOWS -> myViewModel.getTvshows()
+                SearchType.SHOWS_DUBBED -> myViewModel.getTvshowsCzsk()
+                SearchType.DEFAULT -> {
+                    focusSearchEditText()
+                }
+            }
+        }
         myViewModel.data.observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)
         })
@@ -80,10 +85,25 @@ class SearchFragment() : Fragment(), MovieClickListener {
         })
 
         setKeyboardActionListener()
+        setMainActivityListener()
+    }
+
+    private fun setMainActivityListener() {
+        (activity as MainActivity?)?.setSearchListener(object : OnSearchListener {
+            override fun search() {
+                myViewModel.search()
+                clearSearchEditText()
+            }
+
+            override fun searchFocus() {
+                focusSearchEditText()
+            }
+        })
     }
 
     private fun focusSearchEditText() {
         et_search.requestFocus()
+        appbar.setExpanded(true, true)
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
@@ -92,12 +112,18 @@ class SearchFragment() : Fragment(), MovieClickListener {
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
                     myViewModel.search()
-                    closeKeyboard()
+                    clearSearchEditText()
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun clearSearchEditText() {
+        et_search.text.clear()
+        et_search.clearFocus()
+        closeKeyboard()
     }
 
     private fun closeKeyboard() {

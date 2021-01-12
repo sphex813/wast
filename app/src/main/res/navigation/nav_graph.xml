@@ -15,7 +15,7 @@
             app:destination="@id/searchFragment" />
         <action
             android:id="@+id/action_loginFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -25,14 +25,17 @@
         <action
             android:id="@+id/action_searchFragment_to_seriesFragment"
             app:destination="@id/seriesFragment" />
+        <argument
+            android:name="searchType"
+            app:argType="com.example.wast.models.SearchType" />
     </fragment>
     <fragment
-        android:id="@+id/menuFragment"
-        android:name="com.example.wast.menu.MenuFragment"
+        android:id="@+id/homeFragment"
+        android:name="com.example.wast.home.HomeFragment"
         android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" >
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_menuFragment_to_searchFragment"
+            android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
     </fragment>
     <fragment
@@ -71,4 +74,8 @@
     <action
         android:id="@+id/action_global_searchFragment"
         app:destination="@id/searchFragment" />
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:launchSingleTop="true" />
 </navigation>

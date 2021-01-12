@@ -1,22 +1,19 @@
 package com.example.wast.cast
 
 import android.app.Application
-import android.net.Uri
 import android.os.Environment
 import android.util.Log
-import com.arthenica.mobileffmpeg.*
+import com.arthenica.mobileffmpeg.Config
 import com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL
 import com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS
+import com.arthenica.mobileffmpeg.ExecuteCallback
+import com.arthenica.mobileffmpeg.FFmpeg
 import com.example.wast.api.models.SccData
-import com.google.android.gms.cast.MediaInfo
-import com.google.android.gms.cast.MediaLoadRequestData
-import com.google.android.gms.cast.MediaMetadata
-import com.google.android.gms.cast.MediaTrack
+import com.google.android.gms.cast.*
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.media.RemoteMediaClient
 import com.google.android.gms.common.api.ResultCallbacks
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.common.images.WebImage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -36,19 +33,29 @@ class CastComponent : KoinComponent {
         movie: SccData,
         link: String,
     ) {
-        if(link.isNullOrEmpty()){
+        if (link.isNullOrEmpty()) {
             //TODO nenasiel sa link
             return
         }
         if (castContext.sessionManager.currentCastSession == null) {
-            //TODO pripoj na chromecast
             return
         }
 
+        val mediaQueueItem: MediaQueueItem = MediaQueueItem.Builder(buildMediaInfo(movie, link)).build()
+
+        val queueList: ArrayList<MediaQueueItem> = ArrayList()
+        queueList.add(mediaQueueItem)
+        var queueArray: Array<MediaQueueItem?>? = arrayOfNulls(queueList.size)
+        queueArray = queueList.toArray(queueArray)
 
         val remoteMediaClient: RemoteMediaClient =
             castContext.sessionManager.currentCastSession.getRemoteMediaClient()
                 ?: return
+//        remoteMediaClient.queueLoad(mediaQueueItem, 0)
+//        if (remoteMediaClient.mediaInfo != null) {
+//            remoteMediaClient.queueInsertItems(queueArray, 0, null);
+//            //TODO treba dat vediet ze sa pridal item do queue
+//        } else {
         remoteMediaClient.load(MediaLoadRequestData.Builder()
             .setMediaInfo(buildMediaInfo(movie, link))
             .setAutoplay(true)
@@ -62,12 +69,9 @@ class CastComponent : KoinComponent {
                     Log.d("cast", "on Failure")
                 }
             })
-        remoteMediaClient.mediaStatus
     }
+//    }
 
-    fun getasdf() {
-        castContext.sessionManager.currentCastSession.getRemoteMediaClient().mediaStatus
-    }
 
     private fun buildMediaInfo(movie: SccData, link: String): MediaInfo? {
 
@@ -76,11 +80,7 @@ class CastComponent : KoinComponent {
             .setContentId("trk0001")
             .setLanguage("fr")
             .build()
-//        val info: MediaInformation = FFprobe.getMediaInformation(link)
-        val path: String = app.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString() + "/webshare.mp4"
-        val file = File(path)
-        file.delete()
-//        generateFileWithSound(link, path)
+//        val path: String = generateFileWithSound(link)
 
         val movieMetadata = setMovieMetaData(movie)
 
@@ -89,13 +89,17 @@ class CastComponent : KoinComponent {
             .setContentType("videos/mp4") //TODO pridat do Constants
             .setMetadata(movieMetadata)
             .setStreamDuration(MediaInfo.UNKNOWN_DURATION)
-//            .setMediaTracks()
             .build()
+
 
     }
 
     //TODO premiestnit do utils/service
-    private fun generateFileWithSound(link: String, path: String) {
+    private fun generateFileWithSound(link: String): String {
+        //        val info: MediaInformation = FFprobe.getMediaInformation(link)
+        val path: String = app.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString() + "/webshare.mp4"
+        val file = File(path)
+        file.delete()
         FFmpeg.cancel();
         FFmpeg.executeAsync("-i " + link + " -acodec mp3 -vcodec copy " + path, object : ExecuteCallback {
             override fun apply(executionId: Long, returnCode: Int) {
@@ -108,6 +112,7 @@ class CastComponent : KoinComponent {
                 }
             }
         })
+        return path
         //TODO subor treba z lokalneho serveru poslať castu (bude fungovat aj ked bude transcodenuta iba cast?)
         //TODO iba pre nefunkcne zvukove codec-y napr EAC3
     }
@@ -115,9 +120,12 @@ class CastComponent : KoinComponent {
     private fun setMovieMetaData(movie: SccData): MediaMetadata {
         val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
         movieMetadata.putString(MediaMetadata.KEY_TITLE, movie._source.info_labels.originaltitle)
-        movie._source.i18n_info_labels.get(0).art?.poster?.apply {
-            movieMetadata.addImage(WebImage(Uri.parse(this)))
-        }
+        //TODO dorobit nazov casti pre serial
+//        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, movie._source.info_labels.originaltitle)
+        //TODO obrazok asi nebude fungovat... v niektorych pripadoch pada cast receiver
+//        movie._source.i18n_info_labels.get(0).art?.poster?.apply {
+//            movieMetadata.addImage(WebImage(Uri.parse(this)))
+//        }
         //TODO dorbit parent obrazok aj pre cast serialu
         //movieMetadata.addImage(WebImage(Uri.parse(movie._source?.i18n_info_labels?.get(0)?.art?.poster)))
         return movieMetadata
