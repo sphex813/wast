@@ -6,7 +6,7 @@
         <item name="android:drawablePadding">8dp</item>
     </style>
 
-    <style name="menuIcon">
+    <style name="homeIcon">
 <!--        <item name="tint">@color/text_color</item>-->
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">2dp</item>
