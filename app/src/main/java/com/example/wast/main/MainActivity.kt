@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
     }
 
     override fun firstMenuButtonClick() {
+        viewModel.logout()
+        navController.navigate(NavGraphDirections.actionGlobalLoginFragment())
+
     }
 
     override fun homeMenuButtonClick() {
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
     }
 
     override fun lastMenuButtonClick() {
+
     }
 
     fun setSearchListener(listener: OnSearchListener) {

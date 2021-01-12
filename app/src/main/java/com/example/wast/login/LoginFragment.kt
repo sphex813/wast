@@ -29,6 +29,7 @@ class LoginFragment : Fragment(), SingleClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        mainViewModel.disableMenu(true)
         // Inflate the layout for this fragment
         val binding: FragmentLoginBinding = DataBindingUtil.inflate(
             inflater,
@@ -66,25 +67,16 @@ class LoginFragment : Fragment(), SingleClickListener {
 
     private fun loginWithSalt() {
         CoroutineScope(Dispatchers.IO).launch {
-            val loginChanged = myViewModel.loginChanged()
-            val hasToken = myViewModel.hasToken()
-            if (!hasToken || loginChanged) {
-                val salt = myViewModel.salt().body()?.salt ?: ""
-                val token = myViewModel.login(salt)?.body()?.token
-                if (token != null) {
-                    myViewModel.saveLoginData(token)
-                    withContext(Dispatchers.Main) {
-                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMenuFragment())
-                    }
-                } else {
-                    myViewModel.isLoginValid.postValue(false)
-                }
-            } else {
+            val salt = myViewModel.salt().body()?.salt ?: ""
+            val token = myViewModel.login(salt)?.body()?.token
+            if (token != null) {
+                myViewModel.saveLoginData(token)
                 withContext(Dispatchers.Main) {
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMenuFragment())
                 }
+            } else {
+                myViewModel.isLoginValid.postValue(false)
             }
         }
     }
-
 }

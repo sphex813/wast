@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="clickListener"
             type="com.example.wast.listeners.MenuClickListener" />
@@ -34,6 +37,7 @@
         <include
             android:id="@+id/include"
             layout="@layout/menu"
+            android:visibility="@{viewModel.menuDisabled ? View.GONE : View.VISIBLE}"
             android:layout_width="0dp"
             app:clickListener="@{clickListener}"
             android:layout_height="55dp"

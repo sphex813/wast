@@ -7,9 +7,9 @@ import com.example.wast.api.WebRepository
 import com.example.wast.cast.CastComponent
 import com.example.wast.datastore.LocalStorage
 import com.example.wast.dialog.StreamSelectViewModel
+import com.example.wast.home.HomeViewModel
 import com.example.wast.login.LoginViewModel
 import com.example.wast.main.MainActivityViewModel
-import com.example.wast.home.HomeViewModel
 import com.example.wast.search.SearchViewModel
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -41,6 +41,7 @@ fun getModules(app: Application) = module {
     single { CastComponent() }
     single { LocalStorage() }
     single { WebRepository() }
+    single { LoginComponent() }
 
     viewModel { MainActivityViewModel(get()) }
     viewModel { LoginViewModel(get()) }
@@ -49,4 +50,5 @@ fun getModules(app: Application) = module {
     viewModel { EpisodesViewModel() }
     viewModel { SeriesViewModel() }
     viewModel { StreamSelectViewModel() }
+    viewModel { SplashScreenViewModel(get()) }
 }

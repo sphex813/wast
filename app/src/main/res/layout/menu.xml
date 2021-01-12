@@ -32,7 +32,7 @@
             android:layout_marginLeft="24dp"
             android:clickable="true"
             android:onClick="@{() -> clickListener.firstMenuButtonClick()}"
-            android:src="@drawable/ic_logout"
+            android:src="@drawable/menu_button_logout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintStart_toStartOf="@+id/view"

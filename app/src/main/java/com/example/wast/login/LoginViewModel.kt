@@ -4,15 +4,12 @@ import android.app.Application
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.wast.LoginComponent
 import com.example.wast.api.LoginResponse
+import com.example.wast.api.SaltResponse
 import com.example.wast.api.WebApi
 import com.example.wast.datastore.LocalStorage
-import com.example.wast.datastore.PreferenceKeys
 import com.example.wast.utils.HelpUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import retrofit2.Response
@@ -26,11 +23,11 @@ class LoginViewModel(
     var isLoginValid = MutableLiveData<Boolean>(true)
     private val webshareApi: WebApi by inject()
     private val localStorage: LocalStorage by inject()
+    private val loginComponent: LoginComponent by inject()
 
 
     suspend fun login(salt: String): Response<LoginResponse>? {
         val hashedPassword = HelpUtils.getHashedPassword(password.value.toString(), salt)
-
         if (!hashedPassword.isNullOrEmpty()) {
             return webshareApi.login(
                 userName.value.toString(),
@@ -41,29 +38,17 @@ class LoginViewModel(
         return null
     }
 
-    suspend fun salt() = webshareApi.salt(userName.value.toString())
-
-    suspend fun saveLoginData(token: String?) = withContext(Dispatchers.IO) {
-        val deferreds = listOf(
-            async { localStorage.storeValue(PreferenceKeys.USER_NAME, userName.value.toString()) },
-            async { localStorage.storeValue(PreferenceKeys.PASSWORD, password.value.toString()) },
-            async { localStorage.storeValue(PreferenceKeys.TOKEN, token) }
-        )
-        deferreds.awaitAll()
+    suspend fun salt(): Response<SaltResponse> {
+        return loginComponent.salt(userName.value.toString())
     }
 
-    suspend fun hasToken(): Boolean {
-        return localStorage.getValue(PreferenceKeys.TOKEN) != null
-    }
-
-    suspend fun loginChanged(): Boolean {
-        return getFromStorage(PreferenceKeys.USER_NAME) != userName.value.toString() ||
-                getFromStorage(PreferenceKeys.PASSWORD) != password.value.toString()
-
+    suspend fun saveLoginData(token: String) {
+        loginComponent.saveLoginData(token, userName.value.toString(), password.value.toString())
     }
 
     suspend fun <T> getFromStorage(key: Preferences.Key<T>): T? {
         return localStorage.getValue(key)
     }
+
 
 }
