@@ -11,8 +11,13 @@ import com.example.wast.api.models.SccData
 import com.example.wast.databinding.EpisodeBinding
 import com.example.wast.databinding.MovieDetailBinding
 import com.example.wast.databinding.SeriesBinding
+import com.example.wast.datastore.LocalStorage
+import com.example.wast.datastore.PreferenceKeys
 import com.example.wast.search.MovieClickListener
-import com.example.wast.view_holders.BaseViewHolder
+import com.example.wast.viewHolders.BaseViewHolder
+import okhttp3.internal.wait
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class MovieAdapter(private val listener: MovieClickListener) :
     ListAdapter<SccData, BaseViewHolder<*>>(Companion) {
@@ -35,6 +40,7 @@ class MovieAdapter(private val listener: MovieClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val layoutInflater = LayoutInflater.from(parent.context)
+
         return when (viewType) {
             0 -> PosterViewHolder(MovieDetailBinding.inflate(layoutInflater, parent, false), listener)
             1 -> SeriesViewHolder(SeriesBinding.inflate(layoutInflater, parent, false), listener)

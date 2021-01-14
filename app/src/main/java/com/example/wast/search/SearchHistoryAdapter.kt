@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.wast.databinding.SearchHistoryItemBinding
-import com.example.wast.view_holders.BaseViewHolder
+import com.example.wast.viewHolders.BaseViewHolder
 
 class SearchHistoryAdapter(private val listener: HistoryClickListener) : ListAdapter<String, BaseViewHolder<*>>(Companion) {
     companion object : DiffUtil.ItemCallback<String>() {

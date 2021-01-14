@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.wast.SplashScreenViewModel" />
+            type="com.example.wast.splashScreen.SplashScreenViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

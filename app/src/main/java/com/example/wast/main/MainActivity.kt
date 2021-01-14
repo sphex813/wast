@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
         super.onCreate(savedInstanceState)
 
         viewModel.setCastContext(CastContext.getSharedInstance(this))
+        viewModel.registerOnCustSuccesfullListener()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
@@ -67,5 +68,4 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
     fun setSearchListener(listener: OnSearchListener) {
         this.onSearchListener = listener
     }
-
 }

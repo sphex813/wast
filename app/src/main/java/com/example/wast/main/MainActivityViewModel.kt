@@ -3,9 +3,11 @@ package com.example.wast.main
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.wast.LoginComponent
-import com.example.wast.api.models.SccData
 import com.example.wast.cast.CastComponent
+import com.example.wast.cast.CastSuccessListener
+import com.example.wast.datastore.LocalStorage
+import com.example.wast.datastore.PreferenceKeys
+import com.example.wast.login.LoginComponent
 import com.google.android.gms.cast.framework.CastContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,12 +19,13 @@ class MainActivityViewModel(
     private val app: Application,
 ) : ViewModel(), KoinComponent {
     private val cast: CastComponent by inject()
+    private val localStorage: LocalStorage by inject()
     private val loginComponent: LoginComponent by inject()
-    val data: MutableLiveData<MutableList<SccData>> = MutableLiveData(mutableListOf())
     val menuDisabled = MutableLiveData(false)
+    val watchedHistory: MutableLiveData<MutableList<String>> = MutableLiveData()
 
     fun setCastContext(castContext: CastContext) = cast.setCastContext(castContext)
-    fun play(movie: SccData, link: String) = cast.play(movie, link)
+
     fun disableMenu(disableMenu: Boolean) {
         menuDisabled.value = disableMenu
     }
@@ -33,4 +36,13 @@ class MainActivityViewModel(
         }
     }
 
+    fun registerOnCustSuccesfullListener() {
+        cast.registerCastSuccessListener(object : CastSuccessListener {
+            override fun castSuccessfull() {
+                CoroutineScope(Dispatchers.IO).launch {
+                    watchedHistory.postValue(localStorage.getValueAsMutableList(PreferenceKeys.WATCHED))
+                }
+            }
+        })
+    }
 }

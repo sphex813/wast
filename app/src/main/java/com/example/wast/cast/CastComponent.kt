@@ -1,27 +1,30 @@
 package com.example.wast.cast
 
 import android.app.Application
-import android.os.Environment
 import android.util.Log
-import com.arthenica.mobileffmpeg.Config
-import com.arthenica.mobileffmpeg.Config.RETURN_CODE_CANCEL
-import com.arthenica.mobileffmpeg.Config.RETURN_CODE_SUCCESS
-import com.arthenica.mobileffmpeg.ExecuteCallback
-import com.arthenica.mobileffmpeg.FFmpeg
 import com.example.wast.api.models.SccData
-import com.google.android.gms.cast.*
+import com.example.wast.datastore.LocalStorage
+import com.example.wast.datastore.PreferenceKeys
+import com.google.android.gms.cast.MediaInfo
+import com.google.android.gms.cast.MediaLoadRequestData
+import com.google.android.gms.cast.MediaMetadata
+import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.media.RemoteMediaClient
 import com.google.android.gms.common.api.ResultCallbacks
 import com.google.android.gms.common.api.Status
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.File
 
 
 class CastComponent : KoinComponent {
     private val app: Application by inject()
+    private val localStorage: LocalStorage by inject()
     private lateinit var castContext: CastContext
+    private var castSuccessListener: CastSuccessListener? = null
 
     fun setCastContext(cast: CastContext) {
         castContext = cast
@@ -62,6 +65,9 @@ class CastComponent : KoinComponent {
             .setCurrentTime(position.toLong()).build())
             .setResultCallback(object : ResultCallbacks<RemoteMediaClient.MediaChannelResult>() {
                 override fun onSuccess(p0: RemoteMediaClient.MediaChannelResult) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        localStorage.addToList(PreferenceKeys.WATCHED, movie._id, castSuccessListener!!::castSuccessfull)
+                    }
                     Log.d("cast", "on Success")
                 }
 
@@ -74,14 +80,7 @@ class CastComponent : KoinComponent {
 
 
     private fun buildMediaInfo(movie: SccData, link: String): MediaInfo? {
-
-        val frenchAudio = MediaTrack.Builder(1, MediaTrack.TYPE_AUDIO)
-            .setName("French Audio")
-            .setContentId("trk0001")
-            .setLanguage("fr")
-            .build()
-//        val path: String = generateFileWithSound(link)
-
+//        val link: String = generateFileWithSound(app, link)
         val movieMetadata = setMovieMetaData(movie)
 
         return MediaInfo.Builder(link)
@@ -92,29 +91,6 @@ class CastComponent : KoinComponent {
             .build()
 
 
-    }
-
-    //TODO premiestnit do utils/service
-    private fun generateFileWithSound(link: String): String {
-        //        val info: MediaInformation = FFprobe.getMediaInformation(link)
-        val path: String = app.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString() + "/webshare.mp4"
-        val file = File(path)
-        file.delete()
-        FFmpeg.cancel();
-        FFmpeg.executeAsync("-i " + link + " -acodec mp3 -vcodec copy " + path, object : ExecuteCallback {
-            override fun apply(executionId: Long, returnCode: Int) {
-                if (returnCode == RETURN_CODE_SUCCESS) {
-                    Log.i(Config.TAG, "Async command execution completed successfully.");
-                } else if (returnCode == RETURN_CODE_CANCEL) {
-                    Log.i(Config.TAG, "Async command execution cancelled by user.");
-                } else {
-                    Log.i(Config.TAG, String.format("Async command execution failed with returnCode=%d.", returnCode));
-                }
-            }
-        })
-        return path
-        //TODO subor treba z lokalneho serveru poslať castu (bude fungovat aj ked bude transcodenuta iba cast?)
-        //TODO iba pre nefunkcne zvukove codec-y napr EAC3
     }
 
     private fun setMovieMetaData(movie: SccData): MediaMetadata {
@@ -135,5 +111,9 @@ class CastComponent : KoinComponent {
         movie: SccData,
         link: String,
     ) = loadRemoteMedia(0, movie, link)
+
+    fun registerCastSuccessListener(castSuccessListener: CastSuccessListener) {
+        this.castSuccessListener = castSuccessListener
+    }
 
 }

@@ -7,4 +7,5 @@ object PreferenceKeys {
     val PASSWORD = preferencesKey<String>("password")
     val TOKEN = preferencesKey<String>("token")
     val HISTORY = preferencesKey<String>("history")
+    val WATCHED = preferencesKey<String>("watched")
 }

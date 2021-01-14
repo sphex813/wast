@@ -77,7 +77,7 @@
         app:launchSingleTop="true" />
     <fragment
         android:id="@+id/splashScreen"
-        android:name="com.example.wast.SplashScreen"
+        android:name="com.example.wast.splashScreen.SplashScreen"
         android:label="splash_screen"
         tools:layout="@layout/splash_screen" >
         <action

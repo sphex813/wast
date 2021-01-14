@@ -12,7 +12,7 @@ import org.koin.core.component.inject
 
 class SeriesViewModel : ViewModel(), KoinComponent {
     private val repository: WebRepository by inject()
-    val data: MutableLiveData<MutableList<SccData>> = MutableLiveData(mutableListOf())
+    val data: MutableLiveData<MutableList<SccData>> = MutableLiveData()
 
     fun getSeries(id: String) {
         CoroutineScope(Dispatchers.IO).launch {

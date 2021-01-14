@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.wast.api.models.StreamInfo
 import com.example.wast.databinding.StreamSelectItemBinding
-import com.example.wast.view_holders.BaseViewHolder
+import com.example.wast.viewHolders.BaseViewHolder
 
 class StreamSelectAdapter(private val listener: StreamInfoClickListener) : ListAdapter<StreamInfo, BaseViewHolder<*>>(Companion) {
     companion object : DiffUtil.ItemCallback<StreamInfo>() {

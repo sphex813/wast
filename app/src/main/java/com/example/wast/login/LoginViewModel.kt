@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.wast.LoginComponent
 import com.example.wast.api.LoginResponse
 import com.example.wast.api.SaltResponse
 import com.example.wast.api.WebApi

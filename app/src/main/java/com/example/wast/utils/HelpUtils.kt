@@ -1,7 +1,14 @@
 package com.example.wast.utils
 
+import android.app.Application
+import android.os.Environment
+import android.util.Log
+import com.arthenica.mobileffmpeg.Config
+import com.arthenica.mobileffmpeg.ExecuteCallback
+import com.arthenica.mobileffmpeg.FFmpeg
 import com.example.wast.api.models.SccI18nInfoLabel
 import org.apache.commons.codec.digest.Md5Crypt
+import java.io.File
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 
@@ -32,5 +39,28 @@ object HelpUtils {
     fun getTitle(movieInfoList: List<SccI18nInfoLabel>): String {
         val infoLabel = movieInfoList.find { info -> info.title != null }
         return infoLabel?.title ?: ""
+    }
+
+    fun generateFileWithSound(application: Application, link: String): String {
+        //        val info: MediaInformation = FFprobe.getMediaInformation(link)
+        val path: String = application.getExternalFilesDir(Environment.DIRECTORY_MOVIES).toString() + "/webshare.mp4"
+        val file = File(path)
+        file.delete()
+        FFmpeg.cancel();
+        FFmpeg.executeAsync("-i " + link + " -acodec mp3 -vcodec copy " + path, object : ExecuteCallback {
+            override fun apply(executionId: Long, returnCode: Int) {
+                if (returnCode == Config.RETURN_CODE_SUCCESS) {
+                    Log.i(Config.TAG, "Async command execution completed successfully.");
+                } else if (returnCode == Config.RETURN_CODE_CANCEL) {
+                    Log.i(Config.TAG, "Async command execution cancelled by user.");
+                } else {
+                    Log.i(Config.TAG, String.format("Async command execution failed with returnCode=%d.", returnCode));
+                }
+            }
+        })
+        return path
+        //iba pre nefunkcne codec-y napr EAC3, HEVC ...
+        //subor treba z lokalneho serveru poslať castu (bude fungovat aj ked bude transcodenuta iba cast?)
+        //vratit by sa mala cesta suboru na lokalnom servery aby ho vedel cast prehrat
     }
 }

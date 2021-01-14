@@ -13,8 +13,6 @@ import com.example.wast.databinding.FragmentSeriesBinding
 import com.example.wast.search.MovieClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-
 class SeriesFragment : Fragment(), MovieClickListener {
     private val movieAdapter = MovieAdapter(this)
     private val myViewModel: SeriesViewModel by viewModel()
@@ -37,7 +35,9 @@ class SeriesFragment : Fragment(), MovieClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        myViewModel.getSeries(args.tvShowId!!)
+        if (myViewModel.data.value.isNullOrEmpty()) {
+            myViewModel.getSeries(args.tvShowId!!)
+        }
 
         myViewModel.data.observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)

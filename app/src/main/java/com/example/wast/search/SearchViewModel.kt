@@ -4,12 +4,10 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wast.api.WebApi
 import com.example.wast.api.WebRepository
 import com.example.wast.api.models.SccData
 import com.example.wast.api.models.SccResponse
 import com.example.wast.api.models.StreamInfo
-import com.example.wast.cast.CastComponent
 import com.example.wast.datastore.LocalStorage
 import com.example.wast.datastore.PreferenceKeys
 import com.example.wast.models.LoadingState
@@ -113,17 +111,19 @@ class SearchViewModel(
 
     private fun addToSearchHistory() {
         if (!searchedFileName.value?.toString().isNullOrEmpty()) {
-            val historyList = history.value as MutableList<String>
-            historyList.add(0, searchedFileName.value.toString())
-            history.postValue(historyList)
-            storeHistory()
+            CoroutineScope(Dispatchers.IO).launch {
+                history.postValue(
+                    localStorage.addToList(PreferenceKeys.HISTORY, searchedFileName.value.toString())
+                )
+            }
         }
     }
 
     fun deleteFromHistory(position: Int) {
-        val historyList = history.value as MutableList<String>
-        historyList.removeAt(position)
-        history.postValue(historyList)
-        storeHistory()
+        CoroutineScope(Dispatchers.IO).launch {
+            history.postValue(
+                localStorage.removeFromList(PreferenceKeys.HISTORY, position)
+            )
+        }
     }
 }

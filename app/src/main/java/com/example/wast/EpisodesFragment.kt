@@ -10,17 +10,20 @@ import androidx.navigation.fragment.navArgs
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentEpisodesBinding
 import com.example.wast.dialog.StreamSelectDialog
+import com.example.wast.main.MainActivityViewModel
 import com.example.wast.search.MovieClickListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EpisodesFragment : Fragment(), MovieClickListener {
     val args: EpisodesFragmentArgs by navArgs()
     val movieAdapter = MovieAdapter(this)
     private val myViewModel: EpisodesViewModel by viewModel()
+    private val mainViewModel: MainActivityViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +44,10 @@ class EpisodesFragment : Fragment(), MovieClickListener {
 
         myViewModel.getEpisodes(args.seriesId!!)
 
+        mainViewModel.watchedHistory.observe(viewLifecycleOwner, {
+            movieAdapter.notifyDataSetChanged()
+        })
+
         myViewModel.data.observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)
         })
@@ -54,4 +61,6 @@ class EpisodesFragment : Fragment(), MovieClickListener {
             }
         }
     }
+
+
 }

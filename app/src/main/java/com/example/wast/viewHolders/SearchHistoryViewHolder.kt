@@ -1,6 +1,6 @@
 import com.example.wast.databinding.SearchHistoryItemBinding
 import com.example.wast.search.HistoryClickListener
-import com.example.wast.view_holders.BaseViewHolder
+import com.example.wast.viewHolders.BaseViewHolder
 
 class SearchHistoryViewHolder(
     val binding: SearchHistoryItemBinding,

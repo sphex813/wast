@@ -1,4 +1,4 @@
-package com.example.wast.view_holders
+package com.example.wast.viewHolders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

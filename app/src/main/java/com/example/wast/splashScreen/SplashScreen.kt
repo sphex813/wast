@@ -1,4 +1,4 @@
-package com.example.wast
+package com.example.wast.splashScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
 import androidx.navigation.fragment.findNavController
+import com.example.wast.R
 import com.example.wast.databinding.SplashScreenBinding
 import com.example.wast.main.MainActivityViewModel
 import kotlinx.coroutines.*

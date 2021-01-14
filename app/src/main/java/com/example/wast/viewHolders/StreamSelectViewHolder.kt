@@ -4,7 +4,7 @@ import com.example.wast.api.models.SccVideoInfo
 import com.example.wast.api.models.StreamInfo
 import com.example.wast.databinding.StreamSelectItemBinding
 import com.example.wast.dialog.StreamInfoClickListener
-import com.example.wast.view_holders.BaseViewHolder
+import com.example.wast.viewHolders.BaseViewHolder
 
 class StreamSelectViewHolder(
     val binding: StreamSelectItemBinding,

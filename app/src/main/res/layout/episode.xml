@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="watched"
+            type="Boolean" />
+
+        <variable
             name="title"
             type="String" />
 
@@ -51,7 +55,7 @@
                     android:id="@+id/iv_movie"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/background_variant"
+                    android:background="@{watched ? @color/primary : @color/background_variant}"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

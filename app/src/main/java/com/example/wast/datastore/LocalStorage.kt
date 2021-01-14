@@ -29,4 +29,44 @@ class LocalStorage() : KoinComponent {
         }.first()
     }
 
+    suspend fun addToList(key: Preferences.Key<String>, value: String, callback: (() -> Unit)? = null): MutableList<String> {
+        val tempList: MutableList<String> = getValueAsMutableList(key)
+        val valueIndex = tempList.indexOf(value)
+        if (valueIndex != -1) {
+            tempList.removeAt(valueIndex)
+        }
+        tempList.add(0, value)
+        storeValue(key, tempList.joinToString(","))
+        if (callback != null) {
+            callback()
+        }
+        return tempList
+    }
+
+    suspend fun removeFromList(key: Preferences.Key<String>, value: String): MutableList<String> {
+        val tempList: MutableList<String> = getValueAsMutableList(key)
+        val valueIndex = tempList.indexOf(value)
+        if (valueIndex != -1) {
+            tempList.removeAt(valueIndex)
+        }
+        storeValue(key, tempList.joinToString(","))
+        return tempList
+    }
+
+    suspend fun removeFromList(key: Preferences.Key<String>, index: Int): MutableList<String> {
+        val tempList: MutableList<String> = getValueAsMutableList(key)
+        tempList.removeAt(index)
+        storeValue(key, tempList.joinToString(","))
+        return tempList
+    }
+
+
+    suspend fun getValueAsMutableList(key: Preferences.Key<String>): MutableList<String> {
+        val storedValue = getValue(key)
+        if (storedValue.isNullOrEmpty()) {
+            return mutableListOf()
+        } else {
+            return storedValue.split(",").toMutableList()
+        }
+    }
 }

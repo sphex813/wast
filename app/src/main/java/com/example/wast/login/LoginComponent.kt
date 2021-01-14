@@ -1,4 +1,4 @@
-package com.example.wast
+package com.example.wast.login
 
 import android.app.Application
 import com.example.wast.api.SaltResponse
