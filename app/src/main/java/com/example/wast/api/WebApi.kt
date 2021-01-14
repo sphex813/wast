@@ -57,7 +57,7 @@ interface WebApi {
     suspend fun newsDubbed(
         @Url url: String = SCC_URL_FILTER + "newsDubbed",
         @Query("type") type: String = "movie",
-        @Query("sort") sort: String = "dateAdded",
+        @Query("sort") sort: String = "playCount",
         @Query("order") order: String = "desc",
         @Query("days") days: String = "365",
         @Query("lang") langCs: String = "cs",
