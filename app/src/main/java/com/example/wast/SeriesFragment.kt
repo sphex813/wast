@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentSeriesBinding
-import com.example.wast.search.MovieAdapter
 import com.example.wast.search.MovieClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

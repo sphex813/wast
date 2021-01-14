@@ -11,6 +11,7 @@ import com.example.wast.api.models.SccResponse
 import com.example.wast.api.models.StreamInfo
 import com.example.wast.cast.CastComponent
 import com.example.wast.datastore.LocalStorage
+import com.example.wast.datastore.PreferenceKeys
 import com.example.wast.models.LoadingState
 import com.example.wast.utils.Coroutines
 import kotlinx.coroutines.CoroutineScope
@@ -24,20 +25,22 @@ import retrofit2.Response
 class SearchViewModel(
     private val app: Application,
 ) : ViewModel(), KoinComponent {
-    private val api: WebApi by inject()
     private val repo: WebRepository by inject()
     private val localStorage: LocalStorage by inject()
-    private val cast: CastComponent by inject()
     val loading = MutableLiveData<LoadingState>()
     val searchedFileName = MutableLiveData<String?>()
+    val showHistory = MutableLiveData<Boolean>()
     val data: MutableLiveData<MutableList<SccData>?> = MutableLiveData()
+    val history: MutableLiveData<MutableList<String>?> = MutableLiveData()
 
     val searchWithDebounce: () -> Unit = Coroutines.debounce(viewModelScope, 300, { search() })
 
-    fun search() {
+    fun search(historyItem: String? = null) {
         loading.value = LoadingState.LOADING
+        addToSearchHistory()
+        val valueToSearch = historyItem ?: searchedFileName.value.toString()
         CoroutineScope(Dispatchers.IO).launch {
-            repo.search(searchedFileName.value.toString()).let {
+            repo.search(valueToSearch).let {
                 withContext(Dispatchers.Main) {
                     if (it.isSuccessful) {
                         loading.value = LoadingState.LOADED
@@ -86,5 +89,41 @@ class SearchViewModel(
 
     fun getTvshowsCzsk() {
         getData(repo::newDubbedShows)
+    }
+
+
+    private fun storeHistory() {
+        CoroutineScope(Dispatchers.IO).launch {
+            localStorage.storeValue(PreferenceKeys.HISTORY, history.value?.joinToString(","))
+        }
+    }
+
+    fun getSearchHistory() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val historyString = localStorage.getValue(PreferenceKeys.HISTORY)
+            history.postValue(
+                if (historyString.isNullOrEmpty()) {
+                    mutableListOf()
+                } else {
+                    historyString.split(",").toMutableList()
+                }
+            )
+        }
+    }
+
+    private fun addToSearchHistory() {
+        if (!searchedFileName.value?.toString().isNullOrEmpty()) {
+            val historyList = history.value as MutableList<String>
+            historyList.add(0, searchedFileName.value.toString())
+            history.postValue(historyList)
+            storeHistory()
+        }
+    }
+
+    fun deleteFromHistory(position: Int) {
+        val historyList = history.value as MutableList<String>
+        historyList.removeAt(position)
+        history.postValue(historyList)
+        storeHistory()
     }
 }

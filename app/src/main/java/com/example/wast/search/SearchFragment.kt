@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.wast.MovieAdapter
 import com.example.wast.R
 import com.example.wast.api.models.SccData
 import com.example.wast.api.models.StreamInfo
@@ -33,12 +35,12 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchFragment() : Fragment(), MovieClickListener {
+class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
     val mainViewModel by sharedViewModel<MainActivityViewModel>()
     private val myViewModel: SearchViewModel by viewModel()
     private val movieAdapter = MovieAdapter(this)
+    private val historyAdapter = SearchHistoryAdapter(this)
     private val args: SearchFragmentArgs by navArgs()
-    private var movie: SccData? = null
     val imm: InputMethodManager by lazy {
         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
@@ -54,15 +56,22 @@ class SearchFragment() : Fragment(), MovieClickListener {
             container,
             false
         )
+
         binding.lifecycleOwner = this
         binding.viewModel = myViewModel
         binding.movieAdapter = movieAdapter
+        binding.historyAdapter = historyAdapter
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setKeyboardActionListener()
+        setMainActivityListener()
+        setSearchFocusListener()
+        setBackNavigationListener()
+
         if (myViewModel.data.value == null) {
             when (args.searchType) {
                 SearchType.MOVIES -> myViewModel.getMovies()
@@ -74,8 +83,19 @@ class SearchFragment() : Fragment(), MovieClickListener {
                 }
             }
         }
+
+        myViewModel.getSearchHistory()
+        setObservers()
+    }
+
+    private fun setObservers() {
         myViewModel.data.observe(viewLifecycleOwner, {
             movieAdapter.submitList(it)
+        })
+
+        myViewModel.history.observe(viewLifecycleOwner, {
+            historyAdapter.submitList(it)
+            historyAdapter.notifyDataSetChanged()
         })
 
         myViewModel.loading.observe(viewLifecycleOwner, Observer {
@@ -83,9 +103,26 @@ class SearchFragment() : Fragment(), MovieClickListener {
                 Toast.makeText(activity, it.msg!!, Toast.LENGTH_SHORT).show()
             }
         })
+    }
 
-        setKeyboardActionListener()
-        setMainActivityListener()
+    private fun setBackNavigationListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (et_search.hasFocus()) {
+                et_search.clearFocus()
+            } else {
+                findNavController().navigateUp()
+            }
+        }
+    }
+
+    private fun setSearchFocusListener() {
+        et_search.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                myViewModel.showHistory.postValue(true)
+            } else {
+                myViewModel.showHistory.postValue(false)
+            }
+        }
     }
 
     private fun setMainActivityListener() {
@@ -120,7 +157,7 @@ class SearchFragment() : Fragment(), MovieClickListener {
         }
     }
 
-    private fun clearSearchEditText() {
+    private fun clearSearchEditText(clearSearchBar: Boolean = true) {
         et_search.text.clear()
         et_search.clearFocus()
         closeKeyboard()
@@ -150,5 +187,14 @@ class SearchFragment() : Fragment(), MovieClickListener {
                 }
             }
         }
+    }
+
+    override fun onHistoryClick(historyItem: String) {
+        myViewModel.search(historyItem)
+        clearSearchEditText(false)
+    }
+
+    override fun onDeleteHistoryClick(position: Int) {
+        myViewModel.deleteFromHistory(position)
     }
 }

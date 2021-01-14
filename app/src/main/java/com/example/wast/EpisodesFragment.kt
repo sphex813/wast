@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentEpisodesBinding
 import com.example.wast.dialog.StreamSelectDialog
-import com.example.wast.search.MovieAdapter
 import com.example.wast.search.MovieClickListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

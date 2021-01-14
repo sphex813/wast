@@ -18,10 +18,8 @@ class LocalStorage() : KoinComponent {
     }
 
     suspend fun <T> storeValue(key: Preferences.Key<T>, value: T?) {
-        if (value != null) {
-            dataStore.edit { preferences ->
-                preferences[key] = value
-            }
+        dataStore.edit { preferences ->
+            preferences[key] = value!!
         }
     }
 
