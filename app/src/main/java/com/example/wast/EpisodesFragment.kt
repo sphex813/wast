@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
@@ -53,11 +54,15 @@ class EpisodesFragment : Fragment(), MovieClickListener {
         })
     }
 
-    override fun onItemClick(media: SccData) {
+    override fun onItemClick(episodeData: SccData) {
         CoroutineScope(Dispatchers.IO).launch {
-            val streams = myViewModel.getStreams(media._id)
+            val streams = myViewModel.getStreams(episodeData._id)
             withContext(Dispatchers.Main) {
-                StreamSelectDialog(streams, media).show(parentFragmentManager, "streamSelect")
+                if (streams.isEmpty()) {
+                    Toast.makeText(context, "Pre túto epizódu neexistuje žiadny stream", Toast.LENGTH_SHORT).show()
+                } else {
+                    StreamSelectDialog(streams, episodeData, args.parentMediaData).show(parentFragmentManager, "streamSelect")
+                }
             }
         }
     }

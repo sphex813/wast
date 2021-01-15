@@ -49,9 +49,8 @@
             app:nullable="true"
             android:defaultValue="null" />
         <argument
-            android:name="showImage"
-            app:argType="string"
-            android:defaultValue="null" />
+            android:name="parentMediaData"
+            app:argType="com.example.wast.api.models.SccData" />
     </fragment>
     <fragment
         android:id="@+id/episodesFragment"
@@ -64,9 +63,8 @@
             app:nullable="true"
             android:defaultValue="null" />
         <argument
-            android:name="showImage"
-            app:argType="string"
-            android:defaultValue="null" />
+            android:name="parentMediaData"
+            app:argType="com.example.wast.api.models.SccData" />
     </fragment>
     <action
         android:id="@+id/action_global_searchFragment"

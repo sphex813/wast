@@ -7,6 +7,7 @@ import com.arthenica.mobileffmpeg.Config
 import com.arthenica.mobileffmpeg.ExecuteCallback
 import com.arthenica.mobileffmpeg.FFmpeg
 import com.example.wast.api.models.SccI18nInfoLabel
+import com.example.wast.api.models.StreamInfo
 import org.apache.commons.codec.digest.Md5Crypt
 import java.io.File
 import java.nio.charset.StandardCharsets
@@ -37,8 +38,15 @@ object HelpUtils {
     }
 
     fun getTitle(movieInfoList: List<SccI18nInfoLabel>): String {
-        val infoLabel = movieInfoList.find { info -> info.title != null }
-        return infoLabel?.title ?: ""
+        val langs = mutableListOf("sk", "cs", "en")
+        var title: String? = null
+        langs.forEach { lang ->
+            title = movieInfoList.find { info -> info.title != null && info.lang.equals(lang) }?.title
+            if (!title.isNullOrEmpty()) {
+                return title as String
+            }
+        }
+        return ""
     }
 
     fun generateFileWithSound(application: Application, link: String): String {
@@ -63,4 +71,16 @@ object HelpUtils {
         //subor treba z lokalneho serveru poslať castu (bude fungovat aj ked bude transcodenuta iba cast?)
         //vratit by sa mala cesta suboru na lokalnom servery aby ho vedel cast prehrat
     }
+
+    fun getSortedStreams(streams: List<StreamInfo>): List<StreamInfo> {
+        val languageHashMap: HashMap<String, Int> = hashMapOf(
+            "sk" to 0,
+            "cs" to 1,
+            "en" to 2,
+        )
+
+        val sortedList = streams.sortedWith(compareBy({ languageHashMap.getOrDefault(it.audio?.get(0)?.language, 4) }, { it.size!!.toBigInteger() }))
+        return sortedList
+    }
+
 }

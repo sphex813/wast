@@ -22,7 +22,7 @@ class SeriesFragment : Fragment(), MovieClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentSeriesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_series, container, false)
         binding.lifecycleOwner = this
@@ -44,9 +44,9 @@ class SeriesFragment : Fragment(), MovieClickListener {
         })
     }
 
-    override fun onItemClick(movie: SccData) {
-        if (movie._source.children_count > 0) {
-            findNavController().navigate(SeriesFragmentDirections.actionSeriesFragmentToEpisodesFragment(movie._id, args.showImage))
+    override fun onItemClick(seriesData: SccData) {
+        if (seriesData._source.children_count > 0) {
+            findNavController().navigate(SeriesFragmentDirections.actionSeriesFragmentToEpisodesFragment(seriesData._id, args.parentMediaData))
         } else {
             // TODO pusti cast
         }

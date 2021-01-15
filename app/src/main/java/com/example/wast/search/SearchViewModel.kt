@@ -119,10 +119,10 @@ class SearchViewModel(
         }
     }
 
-    fun deleteFromHistory(position: Int) {
+    fun deleteFromHistory(historyItem: String) {
         CoroutineScope(Dispatchers.IO).launch {
             history.postValue(
-                localStorage.removeFromList(PreferenceKeys.HISTORY, position)
+                localStorage.removeFromList(PreferenceKeys.HISTORY, historyItem)
             )
         }
     }

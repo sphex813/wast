@@ -54,7 +54,7 @@ class MovieAdapter(private val listener: MovieClickListener) :
         when (holder) {
             is PosterViewHolder -> holder.bind(movie as SccData)
             is SeriesViewHolder -> holder.bind(movie as SccData)
-            is EpisodeViewHolder -> holder.bind(movie as SccData, position)
+            is EpisodeViewHolder -> holder.bind(movie as SccData)
         }
     }
 

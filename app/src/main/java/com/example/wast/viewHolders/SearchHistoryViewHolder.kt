@@ -7,14 +7,10 @@ class SearchHistoryViewHolder(
     val listener: HistoryClickListener,
 ) : BaseViewHolder<String>(binding.root) {
 
-    fun bind(item: String, position: Int) {
+    override fun bind(item: String) {
         binding.historyItem = item
         binding.clickListener = listener
-        binding.position = position
+        binding.position = adapterPosition
         binding.executePendingBindings()
-    }
-
-    override fun bind(item: String) {
-        TODO("Not yet implemented")
     }
 }

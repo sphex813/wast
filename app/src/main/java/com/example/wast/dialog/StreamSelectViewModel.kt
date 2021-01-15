@@ -15,12 +15,12 @@ class StreamSelectViewModel : ViewModel(), KoinComponent {
     private val repo: WebRepository by inject()
     private val cast: CastComponent by inject()
 
-    fun playMedia(media: SccData, mediaIdentifier: String){
+    fun playMedia(parentMedia: SccData? = null, media: SccData, mediaIdentifier: String){
         CoroutineScope(Dispatchers.IO).launch {
             val fileLink = repo.getFileLink(mediaIdentifier)?.body()?.link
             withContext(Dispatchers.Main) {
                 if (!fileLink.isNullOrEmpty()) {
-                    cast.play(media, fileLink)
+                    cast.play(parentMedia, media, fileLink)
                 } else {
                     //TODO nepodarilo sa získat link
                 }

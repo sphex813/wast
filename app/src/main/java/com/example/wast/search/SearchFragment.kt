@@ -17,7 +17,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.wast.MovieAdapter
 import com.example.wast.R
 import com.example.wast.api.models.SccData
-import com.example.wast.api.models.StreamInfo
 import com.example.wast.databinding.FragmentSearchBinding
 import com.example.wast.dialog.StreamSelectDialog
 import com.example.wast.listeners.OnSearchListener
@@ -25,7 +24,6 @@ import com.example.wast.main.MainActivity
 import com.example.wast.main.MainActivityViewModel
 import com.example.wast.models.LoadingState
 import com.example.wast.models.SearchType
-import com.example.wast.utils.HelpUtils
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,8 +46,7 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         val binding: FragmentSearchBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_search,
@@ -95,7 +92,6 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
 
         myViewModel.history.observe(viewLifecycleOwner, {
             historyAdapter.submitList(it)
-            historyAdapter.notifyDataSetChanged()
         })
 
         myViewModel.loading.observe(viewLifecycleOwner, Observer {
@@ -158,7 +154,9 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
     }
 
     private fun clearSearchEditText(clearSearchBar: Boolean = true) {
-        et_search.text.clear()
+        if (clearSearchBar) {
+            et_search.text.clear()
+        }
         et_search.clearFocus()
         closeKeyboard()
     }
@@ -167,23 +165,18 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
         imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0)
     }
 
-    override fun onItemClick(media: SccData) {
-        if (media._source.children_count > 0) {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToSeriesFragment(media._id,
-                HelpUtils.getMovieLink(media._source.i18n_info_labels)))
+    override fun onItemClick(mediaData: SccData) {
+        if (mediaData._source.children_count > 0) {
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToSeriesFragment(mediaData._id, mediaData))
         } else {
             CoroutineScope(Dispatchers.IO).launch {
-                val streams: List<StreamInfo> = myViewModel.getStreams(media._id)
-
-                val languageHashMap: HashMap<String, Int> = hashMapOf(
-                    "sk" to 0,
-                    "cz" to 1,
-                    "en" to 2,
-                )
-
-                val sortedList = streams.sortedWith(compareBy({ languageHashMap[it.audio?.get(0)?.language] }, { it.size!!.toBigInteger() }))
+                val streams = myViewModel.getStreams(mediaData._id)
                 withContext(Dispatchers.Main) {
-                    StreamSelectDialog(sortedList, media).show(parentFragmentManager, "streamSelect")
+                    if (streams.isEmpty()) {
+                        Toast.makeText(context, "Pre túto epizódu neexistuje žiadny stream", Toast.LENGTH_SHORT).show()
+                    } else {
+                        StreamSelectDialog(streams, mediaData).show(parentFragmentManager, "streamSelect")
+                    }
                 }
             }
         }
@@ -194,7 +187,7 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
         clearSearchEditText(false)
     }
 
-    override fun onDeleteHistoryClick(position: Int) {
-        myViewModel.deleteFromHistory(position)
+    override fun onDeleteHistoryClick(historyItem: String) {
+        myViewModel.deleteFromHistory(historyItem)
     }
 }

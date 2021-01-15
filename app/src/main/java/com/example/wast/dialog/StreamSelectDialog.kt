@@ -9,10 +9,11 @@ import androidx.fragment.app.DialogFragment
 import com.example.wast.api.models.SccData
 import com.example.wast.api.models.StreamInfo
 import com.example.wast.databinding.DialogStreamSelectBinding
+import com.example.wast.utils.HelpUtils.getSortedStreams
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class StreamSelectDialog(private val streams: List<StreamInfo>, private val media: SccData) : DialogFragment(), StreamInfoClickListener {
+class StreamSelectDialog(private val streams: List<StreamInfo>, private val media: SccData, private val parentMedia: SccData? = null) : DialogFragment(), StreamInfoClickListener {
     private val viewModel: StreamSelectViewModel by viewModel()
     private val streamSelectAdapter = StreamSelectAdapter(this)
 
@@ -21,7 +22,7 @@ class StreamSelectDialog(private val streams: List<StreamInfo>, private val medi
         binding.adapter = streamSelectAdapter
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        streamSelectAdapter.submitList(streams)
+        streamSelectAdapter.submitList(getSortedStreams(streams))
         return binding.root
     }
 
@@ -31,7 +32,7 @@ class StreamSelectDialog(private val streams: List<StreamInfo>, private val medi
     }
 
     override fun onItemClick(info: StreamInfo) {
-        viewModel.playMedia(media, info.ident)
+        viewModel.playMedia(parentMedia, media, info.ident)
         dialog?.dismiss()
     }
 }

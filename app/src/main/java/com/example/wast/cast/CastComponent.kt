@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.wast.api.models.SccData
 import com.example.wast.datastore.LocalStorage
 import com.example.wast.datastore.PreferenceKeys
+import com.example.wast.utils.HelpUtils
 import com.google.android.gms.cast.MediaInfo
 import com.google.android.gms.cast.MediaLoadRequestData
 import com.google.android.gms.cast.MediaMetadata
@@ -33,18 +34,15 @@ class CastComponent : KoinComponent {
 
     private fun loadRemoteMedia(
         position: Int,
-        movie: SccData,
+        parentMedia: SccData?,
+        media: SccData,
         link: String,
     ) {
-        if (link.isNullOrEmpty()) {
-            //TODO nenasiel sa link
-            return
-        }
         if (castContext.sessionManager.currentCastSession == null) {
             return
         }
 
-        val mediaQueueItem: MediaQueueItem = MediaQueueItem.Builder(buildMediaInfo(movie, link)).build()
+        val mediaQueueItem: MediaQueueItem = MediaQueueItem.Builder(buildMediaInfo(parentMedia, media, link)).build()
 
         val queueList: ArrayList<MediaQueueItem> = ArrayList()
         queueList.add(mediaQueueItem)
@@ -60,13 +58,13 @@ class CastComponent : KoinComponent {
 //            //TODO treba dat vediet ze sa pridal item do queue
 //        } else {
         remoteMediaClient.load(MediaLoadRequestData.Builder()
-            .setMediaInfo(buildMediaInfo(movie, link))
+            .setMediaInfo(buildMediaInfo(parentMedia, media, link))
             .setAutoplay(true)
             .setCurrentTime(position.toLong()).build())
             .setResultCallback(object : ResultCallbacks<RemoteMediaClient.MediaChannelResult>() {
                 override fun onSuccess(p0: RemoteMediaClient.MediaChannelResult) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        localStorage.addToList(PreferenceKeys.WATCHED, movie._id, castSuccessListener!!::castSuccessfull)
+                        localStorage.addToList(PreferenceKeys.WATCHED, media._id, castSuccessListener!!::castSuccessfull)
                     }
                     Log.d("cast", "on Success")
                 }
@@ -76,12 +74,10 @@ class CastComponent : KoinComponent {
                 }
             })
     }
-//    }
 
-
-    private fun buildMediaInfo(movie: SccData, link: String): MediaInfo? {
+    private fun buildMediaInfo(parentData: SccData?, mediaData: SccData, link: String): MediaInfo? {
 //        val link: String = generateFileWithSound(app, link)
-        val movieMetadata = setMovieMetaData(movie)
+        val movieMetadata = setMovieMetaData(parentData, mediaData)
 
         return MediaInfo.Builder(link)
             .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
@@ -93,24 +89,24 @@ class CastComponent : KoinComponent {
 
     }
 
-    private fun setMovieMetaData(movie: SccData): MediaMetadata {
+    private fun setMovieMetaData(parentData: SccData?, mediaData: SccData): MediaMetadata {
         val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, movie._source.info_labels.originaltitle)
-        //TODO dorobit nazov casti pre serial
-//        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, movie._source.info_labels.originaltitle)
-        //TODO obrazok asi nebude fungovat... v niektorych pripadoch pada cast receiver
-//        movie._source.i18n_info_labels.get(0).art?.poster?.apply {
-//            movieMetadata.addImage(WebImage(Uri.parse(this)))
-//        }
-        //TODO dorbit parent obrazok aj pre cast serialu
-        //movieMetadata.addImage(WebImage(Uri.parse(movie._source?.i18n_info_labels?.get(0)?.art?.poster)))
+        if (parentData != null) {
+            movieMetadata.putString(MediaMetadata.KEY_TITLE, HelpUtils.getTitle(parentData._source.i18n_info_labels))
+            movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, HelpUtils.getTitle((mediaData._source.i18n_info_labels)))
+        } else {
+            movieMetadata.putString(MediaMetadata.KEY_TITLE, HelpUtils.getTitle(mediaData._source.i18n_info_labels))
+        }
+
         return movieMetadata
     }
 
     fun play(
-        movie: SccData,
+        parentMedia: SccData?,
+        media: SccData,
         link: String,
-    ) = loadRemoteMedia(0, movie, link)
+        position: Int = 0,
+    ) = loadRemoteMedia(position, parentMedia, media, link)
 
     fun registerCastSuccessListener(castSuccessListener: CastSuccessListener) {
         this.castSuccessListener = castSuccessListener

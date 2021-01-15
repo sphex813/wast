@@ -17,20 +17,16 @@ class EpisodeViewHolder(
 ) : BaseViewHolder<SccData>(binding.root) {
     val localStorage = object: KoinComponent {val localStorage: LocalStorage by inject()}.localStorage
 
-    fun bind(item: SccData, position: Int) {
+    override fun bind(item: SccData) {
         CoroutineScope(Dispatchers.IO).launch {
             val watchedList = localStorage.getValueAsMutableList(PreferenceKeys.WATCHED)
             binding.watched = watchedList.find{ id -> id.equals(item._id)} != null
         }
 
         binding.movie = item
-        binding.title = (position + 1).toString() + " " + HelpUtils.getTitle(item._source.i18n_info_labels)
+        binding.title = (adapterPosition + 1).toString() + " " + HelpUtils.getTitle(item._source.i18n_info_labels)
         binding.movieImage = HelpUtils.getMovieLink(item._source.i18n_info_labels)
         binding.clickListner = listener
         binding.executePendingBindings()
-    }
-
-    override fun bind(item: SccData) {
-        TODO("Not yet implemented")
     }
 }

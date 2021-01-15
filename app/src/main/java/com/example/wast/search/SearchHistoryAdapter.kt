@@ -11,7 +11,7 @@ import com.example.wast.viewHolders.BaseViewHolder
 class SearchHistoryAdapter(private val listener: HistoryClickListener) : ListAdapter<String, BaseViewHolder<*>>(Companion) {
     companion object : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
-            oldItem == newItem
+            oldItem.equals(newItem)
 
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
             oldItem.equals(newItem)
@@ -23,6 +23,6 @@ class SearchHistoryAdapter(private val listener: HistoryClickListener) : ListAda
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-        (holder as SearchHistoryViewHolder).bind(getItem(position), position)
+        (holder as SearchHistoryViewHolder).bind(getItem(position))
     }
 }

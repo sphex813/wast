@@ -35,7 +35,7 @@ class SplashScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         launchJob = lifecycleScope.launch(Dispatchers.Default) {
             val isLoggedIn = viewModel.isLoggedIn()
-            delay(2000)
+            delay(1000)
 
             whenResumed {
                 withContext(Dispatchers.Main) {
