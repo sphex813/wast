@@ -9,16 +9,15 @@ import com.example.wast.NavGraphDirections
 import com.example.wast.R
 import com.example.wast.databinding.ActivityMainBinding
 import com.example.wast.listeners.MenuClickListener
-import com.example.wast.listeners.OnSearchListener
+import com.example.wast.listeners.MenuSearchClickListener
 import com.example.wast.models.SearchType
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
-import kotlinx.android.synthetic.main.fragment_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity(), MenuClickListener {
-    var onSearchListener: OnSearchListener? = null
+    var menuSearchClickListener: MenuSearchClickListener? = null
     private val viewModel by viewModel<MainActivityViewModel>()
     private lateinit var binding: ActivityMainBinding
     private val navController
@@ -53,11 +52,7 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
         if (navController.currentDestination?.id != R.id.searchFragment) {
             navController.navigate(NavGraphDirections.actionGlobalSearchFragment(SearchType.DEFAULT))
         } else {
-            if (et_search.hasFocus()) {
-                onSearchListener?.search()
-            } else {
-                onSearchListener?.searchFocus()
-            }
+            menuSearchClickListener?.onMenuSearchButtonClick()
         }
     }
 
@@ -65,7 +60,7 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
 
     }
 
-    fun setSearchListener(listener: OnSearchListener) {
-        this.onSearchListener = listener
+    fun setSearchListener(clickListener: MenuSearchClickListener) {
+        this.menuSearchClickListener = clickListener
     }
 }

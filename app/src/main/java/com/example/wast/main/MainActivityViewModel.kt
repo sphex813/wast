@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.wast.cast.CastComponent
-import com.example.wast.cast.CastSuccessListener
+import com.example.wast.cast.CastPlayListener
 import com.example.wast.datastore.LocalStorage
 import com.example.wast.datastore.PreferenceKeys
 import com.example.wast.login.LoginComponent
@@ -37,8 +37,8 @@ class MainActivityViewModel(
     }
 
     fun registerOnCustSuccesfullListener() {
-        cast.registerCastSuccessListener(object : CastSuccessListener {
-            override fun castSuccessfull() {
+        cast.registerCastSuccessListener(object : CastPlayListener {
+            override fun addToWatched() {
                 CoroutineScope(Dispatchers.IO).launch {
                     watchedHistory.postValue(localStorage.getValueAsMutableList(PreferenceKeys.WATCHED))
                 }

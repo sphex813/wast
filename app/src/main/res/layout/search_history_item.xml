@@ -12,10 +12,6 @@
         <variable
             name="historyItem"
             type="String" />
-
-        <variable
-            name="position"
-            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -25,7 +25,7 @@ class CastComponent : KoinComponent {
     private val app: Application by inject()
     private val localStorage: LocalStorage by inject()
     private lateinit var castContext: CastContext
-    private var castSuccessListener: CastSuccessListener? = null
+    private var castPlayListener: CastPlayListener? = null
 
     fun setCastContext(cast: CastContext) {
         castContext = cast
@@ -64,7 +64,7 @@ class CastComponent : KoinComponent {
             .setResultCallback(object : ResultCallbacks<RemoteMediaClient.MediaChannelResult>() {
                 override fun onSuccess(p0: RemoteMediaClient.MediaChannelResult) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        localStorage.addToList(PreferenceKeys.WATCHED, media._id, castSuccessListener!!::castSuccessfull)
+                        localStorage.addToList(PreferenceKeys.WATCHED, media._id, castPlayListener!!::addToWatched)
                     }
                     Log.d("cast", "on Success")
                 }
@@ -108,8 +108,8 @@ class CastComponent : KoinComponent {
         position: Int = 0,
     ) = loadRemoteMedia(position, parentMedia, media, link)
 
-    fun registerCastSuccessListener(castSuccessListener: CastSuccessListener) {
-        this.castSuccessListener = castSuccessListener
+    fun registerCastSuccessListener(castPlayListener: CastPlayListener) {
+        this.castPlayListener = castPlayListener
     }
 
 }

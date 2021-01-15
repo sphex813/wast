@@ -19,7 +19,7 @@ import com.example.wast.R
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentSearchBinding
 import com.example.wast.dialog.StreamSelectDialog
-import com.example.wast.listeners.OnSearchListener
+import com.example.wast.listeners.MenuSearchClickListener
 import com.example.wast.main.MainActivity
 import com.example.wast.main.MainActivityViewModel
 import com.example.wast.models.LoadingState
@@ -33,7 +33,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
+class SearchFragment : Fragment(), MovieClickListener, HistoryClickListener, MenuSearchClickListener {
     val mainViewModel by sharedViewModel<MainActivityViewModel>()
     private val myViewModel: SearchViewModel by viewModel()
     private val movieAdapter = MovieAdapter(this)
@@ -65,7 +65,7 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setKeyboardActionListener()
-        setMainActivityListener()
+        setMenuSearchButtonListener()
         setSearchFocusListener()
         setBackNavigationListener()
 
@@ -121,17 +121,8 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
         }
     }
 
-    private fun setMainActivityListener() {
-        (activity as MainActivity?)?.setSearchListener(object : OnSearchListener {
-            override fun search() {
-                myViewModel.search()
-                clearSearchEditText()
-            }
-
-            override fun searchFocus() {
-                focusSearchEditText()
-            }
-        })
+    private fun setMenuSearchButtonListener() {
+        (activity as MainActivity?)?.setSearchListener(this)
     }
 
     private fun focusSearchEditText() {
@@ -162,7 +153,7 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
     }
 
     private fun closeKeyboard() {
-        imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0)
+        imm.hideSoftInputFromWindow(et_search.windowToken, 0)
     }
 
     override fun onItemClick(mediaData: SccData) {
@@ -190,4 +181,15 @@ class SearchFragment() : Fragment(), MovieClickListener, HistoryClickListener {
     override fun onDeleteHistoryClick(historyItem: String) {
         myViewModel.deleteFromHistory(historyItem)
     }
+
+    override fun onMenuSearchButtonClick() {
+        if (et_search.hasFocus()) {
+            myViewModel.search()
+            clearSearchEditText()
+        } else {
+            focusSearchEditText()
+        }
+    }
+
+
 }

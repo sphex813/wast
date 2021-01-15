@@ -10,7 +10,6 @@ class SearchHistoryViewHolder(
     override fun bind(item: String) {
         binding.historyItem = item
         binding.clickListener = listener
-        binding.position = adapterPosition
         binding.executePendingBindings()
     }
 }
