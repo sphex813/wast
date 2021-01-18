@@ -13,18 +13,21 @@ import org.koin.core.component.inject
 
 class EpisodeViewHolder(
     val binding: EpisodeBinding,
-    val listener: MovieClickListener
+    val listener: MovieClickListener,
 ) : BaseViewHolder<SccData>(binding.root) {
-    val localStorage = object: KoinComponent {val localStorage: LocalStorage by inject()}.localStorage
+    val localStorage = object : KoinComponent {
+        val localStorage: LocalStorage by inject()
+    }.localStorage
 
     override fun bind(item: SccData) {
         CoroutineScope(Dispatchers.IO).launch {
             val watchedList = localStorage.getValueAsMutableList(PreferenceKeys.WATCHED)
-            binding.watched = watchedList.find{ id -> id.equals(item._id)} != null
+            binding.watched = watchedList.find { id -> id.equals(item._id) } != null
         }
 
         binding.movie = item
-        binding.title = (adapterPosition + 1).toString() + " " + HelpUtils.getTitle(item._source.i18n_info_labels)
+        binding.title =
+            (adapterPosition + 1).toString() + " " + HelpUtils.getTitle(item._source.info_labels.originaltitle, item._source.i18n_info_labels)
         binding.movieImage = HelpUtils.getMovieLink(item._source.i18n_info_labels)
         binding.clickListner = listener
         binding.executePendingBindings()

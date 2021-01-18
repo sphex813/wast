@@ -32,7 +32,7 @@ class MovieAdapter(private val listener: MovieClickListener) :
 
     companion object : DiffUtil.ItemCallback<SccData>() {
         override fun areItemsTheSame(oldItem: SccData, newItem: SccData): Boolean =
-            oldItem === newItem
+            oldItem._id == newItem._id
 
         override fun areContentsTheSame(oldItem: SccData, newItem: SccData): Boolean =
             oldItem._id == newItem._id

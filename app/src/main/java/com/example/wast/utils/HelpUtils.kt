@@ -12,6 +12,8 @@ import org.apache.commons.codec.digest.Md5Crypt
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
+import java.util.*
+import kotlin.collections.HashMap
 
 object HelpUtils {
     fun hash(algorithm: String, str: String) = MessageDigest
@@ -37,16 +39,16 @@ object HelpUtils {
         return movieImage
     }
 
-    fun getTitle(movieInfoList: List<SccI18nInfoLabel>): String {
+    fun getTitle(originalTitle: String?, movieInfoList: List<SccI18nInfoLabel>): String {
         val langs = mutableListOf("sk", "cs", "en")
-        var title: String? = null
+        var title: String
         langs.forEach { lang ->
-            title = movieInfoList.find { info -> info.title != null && info.lang.equals(lang) }?.title
-            if (!title.isNullOrEmpty()) {
+            title = movieInfoList.find { info -> info.title != null && info.lang.equals(lang) }?.title ?: ""
+            if (!title.isEmpty() && !title.toLowerCase(Locale.ROOT).contains("epizóda")) {
                 return title as String
             }
         }
-        return ""
+        return originalTitle ?: ""
     }
 
     fun generateFileWithSound(application: Application, link: String): String {

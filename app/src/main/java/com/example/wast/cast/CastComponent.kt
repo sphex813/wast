@@ -92,10 +92,13 @@ class CastComponent : KoinComponent {
     private fun setMovieMetaData(parentData: SccData?, mediaData: SccData): MediaMetadata {
         val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE)
         if (parentData != null) {
-            movieMetadata.putString(MediaMetadata.KEY_TITLE, HelpUtils.getTitle(parentData._source.i18n_info_labels))
-            movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, HelpUtils.getTitle((mediaData._source.i18n_info_labels)))
+            movieMetadata.putString(MediaMetadata.KEY_TITLE, HelpUtils.getTitle(parentData._source.info_labels.originaltitle,
+                parentData._source.i18n_info_labels))
+            movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, HelpUtils.getTitle(mediaData._source.info_labels.originaltitle,
+                (mediaData._source.i18n_info_labels)))
         } else {
-            movieMetadata.putString(MediaMetadata.KEY_TITLE, HelpUtils.getTitle(mediaData._source.i18n_info_labels))
+            movieMetadata.putString(MediaMetadata.KEY_TITLE, HelpUtils.getTitle(mediaData._source.info_labels.originaltitle,
+                mediaData._source.i18n_info_labels))
         }
 
         return movieMetadata
