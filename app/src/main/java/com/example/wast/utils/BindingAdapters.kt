@@ -16,6 +16,7 @@ object BindingAdapters {
         if (!url.isNullOrBlank()) {
             Picasso.get()
                 .load(url)
+                .resize(340,510)
                 .into(this)
         }
     }

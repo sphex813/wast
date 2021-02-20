@@ -32,7 +32,7 @@ object HelpUtils {
 
     fun getMovieLink(movieInfoList: List<SccI18nInfoLabel>): String {
         val movieInfo = movieInfoList.find { image -> image.art?.poster != null }
-        var movieImage = movieInfo?.art?.poster + "?w180"
+        var movieImage = movieInfo?.art?.poster ?: ""
         if (!movieImage.startsWith("https:") || !movieImage.startsWith("https:")) {
             movieImage = "https:" + movieImage
         }

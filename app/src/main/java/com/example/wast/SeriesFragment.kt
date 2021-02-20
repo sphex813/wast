@@ -4,13 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentSeriesBinding
+import com.example.wast.dialog.StreamSelectDialog
 import com.example.wast.search.MovieClickListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SeriesFragment : Fragment(), MovieClickListener {
@@ -48,7 +54,16 @@ class SeriesFragment : Fragment(), MovieClickListener {
         if (seriesData._source.children_count > 0) {
             findNavController().navigate(SeriesFragmentDirections.actionSeriesFragmentToEpisodesFragment(seriesData._id, args.parentMediaData))
         } else {
-            // TODO pusti cast
+            CoroutineScope(Dispatchers.IO).launch {
+                val streams = myViewModel.getStreams(seriesData._id)
+                withContext(Dispatchers.Main) {
+                    if (streams.isEmpty()) {
+                        Toast.makeText(context, "Pre túto epizódu neexistuje žiadny stream", Toast.LENGTH_SHORT).show()
+                    } else {
+                        StreamSelectDialog(streams, seriesData, args.parentMediaData).show(parentFragmentManager, "streamSelect")
+                    }
+                }
+            }
         }
     }
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.example.wast.api.WebRepository
 import com.example.wast.api.models.SccData
 import com.example.wast.api.models.StreamInfo
-import com.example.wast.cast.CastComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +18,8 @@ class EpisodesViewModel : ViewModel(), KoinComponent {
     fun getEpisodes(id: String) {
         CoroutineScope(Dispatchers.IO).launch {
             data.postValue(repository.getContentFromId(id)
-                .body()?.data?.filter { item -> item._source.info_labels.mediatype == "episode" } as MutableList<SccData>?)
+                .body()?.data as MutableList<SccData>?)
+            //?.filter { item -> item._source.info_labels.mediatype == "episode" } as MutableList<SccData>?)
         }
     }
 
