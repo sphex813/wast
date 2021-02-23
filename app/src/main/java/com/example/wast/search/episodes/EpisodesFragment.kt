@@ -1,4 +1,4 @@
-package com.example.wast
+package com.example.wast.search.episodes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.example.wast.search.MovieAdapter
+import com.example.wast.R
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentEpisodesBinding
 import com.example.wast.dialog.StreamSelectDialog

@@ -11,12 +11,22 @@ import com.squareup.picasso.Picasso
 
 object BindingAdapters {
     @JvmStatic
+    @BindingAdapter("setImageUrlSmall")
+    fun ImageView.setImageUrlSmall(url: String?) {
+        if (!url.isNullOrBlank()) {
+            Picasso.get()
+                .load(url)
+                .resize(340,510)
+                .into(this)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("setImageUrl")
     fun ImageView.setImageUrl(url: String?) {
         if (!url.isNullOrBlank()) {
             Picasso.get()
                 .load(url)
-                .resize(340,510)
                 .into(this)
         }
     }

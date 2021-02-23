@@ -11,7 +11,7 @@ class SeriesViewHolder(
     override fun bind(item: SccData) {
         binding.movie = item
         binding.title = HelpUtils.getTitle(item._source.info_labels.originaltitle, item._source.i18n_info_labels)
-        binding.movieImage = HelpUtils.getMovieLink(item._source.i18n_info_labels)
+        binding.movieImage = HelpUtils.getMovieImageLink(item._source.i18n_info_labels)
         binding.clickListner = listener
         binding.executePendingBindings()
     }

@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".EpisodesFragment">
+    tools:context=".search.episodes.EpisodesFragment">
 
     <data>
 
         <variable
             name="movieAdapter"
-            type="com.example.wast.MovieAdapter" />
+            type="com.example.wast.search.MovieAdapter" />
 
         <variable
             name="viewModel"
-            type="com.example.wast.EpisodesViewModel" />
+            type="com.example.wast.search.episodes.EpisodesViewModel" />
 
         <variable
             name="clickListener"
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="8dp"
+        android:paddingTop="38dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/et_search"
         app:layout_constraintEnd_toEndOf="parent"

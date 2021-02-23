@@ -6,12 +6,10 @@ import com.example.wast.api.models.SccData
 import com.example.wast.datastore.LocalStorage
 import com.example.wast.datastore.PreferenceKeys
 import com.example.wast.utils.HelpUtils
-import com.google.android.gms.cast.MediaInfo
-import com.google.android.gms.cast.MediaLoadRequestData
-import com.google.android.gms.cast.MediaMetadata
-import com.google.android.gms.cast.MediaQueueItem
+import com.google.android.gms.cast.*
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.cast.framework.media.RemoteMediaClient
+import com.google.android.gms.cast.framework.media.RemoteMediaClient.ProgressListener
 import com.google.android.gms.common.api.ResultCallbacks
 import com.google.android.gms.common.api.Status
 import kotlinx.coroutines.CoroutineScope
@@ -66,6 +64,8 @@ class CastComponent : KoinComponent {
                     CoroutineScope(Dispatchers.IO).launch {
                         localStorage.addToList(PreferenceKeys.WATCHED, media._id, castPlayListener!!::addToWatched)
                     }
+                    castPlayListener?.setPlayiedMedia(media);
+
                     Log.d("cast", "on Success")
                 }
 
@@ -85,8 +85,6 @@ class CastComponent : KoinComponent {
             .setMetadata(movieMetadata)
             .setStreamDuration(MediaInfo.UNKNOWN_DURATION)
             .build()
-
-
     }
 
     private fun setMovieMetaData(parentData: SccData?, mediaData: SccData): MediaMetadata {
@@ -113,6 +111,33 @@ class CastComponent : KoinComponent {
 
     fun registerCastSuccessListener(castPlayListener: CastPlayListener) {
         this.castPlayListener = castPlayListener
+    }
+
+    fun registerCastProgressListener(progressListener: ProgressListener) {
+        castContext.sessionManager?.currentCastSession?.getRemoteMediaClient()?.addProgressListener(progressListener, 1000)
+    }
+
+    fun unregisterCastProgressListener(progressListener: ProgressListener) {
+        castContext.sessionManager?.currentCastSession?.getRemoteMediaClient()?.removeProgressListener(progressListener)
+    }
+
+    fun getState(): Boolean {
+        return castContext.sessionManager?.currentCastSession?.getRemoteMediaClient()?.isPlaying ?: false
+    }
+
+    fun pause() {
+        castContext.sessionManager?.currentCastSession?.getRemoteMediaClient()?.pause()
+    }
+
+    fun play() {
+        castContext.sessionManager?.currentCastSession?.getRemoteMediaClient()?.play()
+    }
+
+    fun seekToPosition(value: Int?) {
+        if (value !== null) {
+            castContext.sessionManager?.currentCastSession?.getRemoteMediaClient()
+                ?.seek(MediaSeekOptions.Builder().setPosition(value.toLong()).build())
+        }
     }
 
 }

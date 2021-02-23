@@ -19,13 +19,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:paddingTop="30dp"
         android:layout_height="match_parent">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="16dp"
+            >
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_movies"

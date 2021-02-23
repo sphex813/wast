@@ -13,6 +13,7 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
 object HelpUtils {
@@ -30,7 +31,7 @@ object HelpUtils {
         return null
     }
 
-    fun getMovieLink(movieInfoList: List<SccI18nInfoLabel>): String {
+    fun getMovieImageLink(movieInfoList: List<SccI18nInfoLabel>): String {
         val movieInfo = movieInfoList.find { image -> image.art?.poster != null }
         var movieImage = movieInfo?.art?.poster ?: ""
         if (!movieImage.startsWith("https:") || !movieImage.startsWith("https:")) {
@@ -84,5 +85,13 @@ object HelpUtils {
         val sortedList = streams.sortedWith(compareBy({ languageHashMap.getOrDefault(it.audio?.get(0)?.language, 4) }, { it.size!!.toBigInteger() }))
         return sortedList
     }
+
+    fun msToTimeString(ms: Long): String {
+        val hours = TimeUnit.MILLISECONDS.toHours(ms)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(ms) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(ms))
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(ms) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(ms))
+        return String.format("%d:%02d:%02d", hours,minutes,seconds);
+    }
+
 
 }

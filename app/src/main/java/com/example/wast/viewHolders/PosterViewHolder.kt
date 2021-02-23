@@ -11,7 +11,7 @@ class PosterViewHolder(
     BaseViewHolder<SccData>(binding.root) {
     override fun bind(item: SccData) {
         binding.movie = item
-        binding.movieImage = HelpUtils.getMovieLink(item._source.i18n_info_labels)
+        binding.movieImage = HelpUtils.getMovieImageLink(item._source.i18n_info_labels)
         binding.clickListner = listener
         binding.executePendingBindings()
     }

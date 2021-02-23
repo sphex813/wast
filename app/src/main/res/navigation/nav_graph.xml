@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/seriesFragment"
-        android:name="com.example.wast.SeriesFragment"
+        android:name="com.example.wast.search.series.SeriesFragment"
         android:label="fragment_series"
         tools:layout="@layout/fragment_series" >
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/episodesFragment"
-        android:name="com.example.wast.EpisodesFragment"
+        android:name="com.example.wast.search.episodes.EpisodesFragment"
         android:label="fragment_episodes"
         tools:layout="@layout/fragment_episodes" >
         <argument
@@ -95,4 +95,9 @@
         app:launchSingleTop="true"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/playFragment"
+        android:name="com.example.wast.PlayFragment"
+        android:label="fragment_play"
+        tools:layout="@layout/fragment_play" /><action android:id="@+id/action_global_playFragment" app:destination="@id/playFragment"/>
 </navigation>

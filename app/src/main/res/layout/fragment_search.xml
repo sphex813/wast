@@ -10,7 +10,7 @@
 
         <variable
             name="movieAdapter"
-            type="com.example.wast.MovieAdapter" />
+            type="com.example.wast.search.MovieAdapter" />
 
         <variable
             name="historyAdapter"
@@ -23,6 +23,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
+        android:paddingTop="30dp"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout

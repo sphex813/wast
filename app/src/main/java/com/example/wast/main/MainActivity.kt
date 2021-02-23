@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), MenuClickListener {
     }
 
     override fun lastMenuButtonClick() {
-
+        navController.navigate(NavGraphDirections.actionGlobalPlayFragment())
     }
 
     fun setSearchListener(clickListener: MenuSearchClickListener) {

@@ -12,6 +12,8 @@ import com.example.wast.login.LoginComponent
 import com.example.wast.login.LoginViewModel
 import com.example.wast.main.MainActivityViewModel
 import com.example.wast.search.SearchViewModel
+import com.example.wast.search.episodes.EpisodesViewModel
+import com.example.wast.search.series.SeriesViewModel
 import com.example.wast.splashScreen.SplashScreenViewModel
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -53,4 +55,5 @@ fun getModules(app: Application) = module {
     viewModel { SeriesViewModel() }
     viewModel { StreamSelectViewModel() }
     viewModel { SplashScreenViewModel(get()) }
+    viewModel { PlayViewModel() }
 }

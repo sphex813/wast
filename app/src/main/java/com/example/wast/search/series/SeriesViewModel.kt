@@ -1,4 +1,4 @@
-package com.example.wast
+package com.example.wast.search.series
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

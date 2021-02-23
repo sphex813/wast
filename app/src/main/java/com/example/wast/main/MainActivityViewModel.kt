@@ -3,6 +3,7 @@ package com.example.wast.main
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.wast.api.models.SccData
 import com.example.wast.cast.CastComponent
 import com.example.wast.cast.CastPlayListener
 import com.example.wast.datastore.LocalStorage
@@ -23,6 +24,7 @@ class MainActivityViewModel(
     private val loginComponent: LoginComponent by inject()
     val menuDisabled = MutableLiveData(false)
     val watchedHistory: MutableLiveData<MutableList<String>> = MutableLiveData()
+    val currentlyPlaying: MutableLiveData<SccData> = MutableLiveData()
 
     fun setCastContext(castContext: CastContext) = cast.setCastContext(castContext)
 
@@ -42,6 +44,10 @@ class MainActivityViewModel(
                 CoroutineScope(Dispatchers.IO).launch {
                     watchedHistory.postValue(localStorage.getValueAsMutableList(PreferenceKeys.WATCHED))
                 }
+            }
+
+            override fun setPlayiedMedia(media: SccData) {
+                currentlyPlaying.postValue(media)
             }
         })
     }

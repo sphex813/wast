@@ -6,12 +6,14 @@
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/background</item>
 
-        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Customize your theme here. -->
     </style>
 
 
     <style name="Theme.Wast.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

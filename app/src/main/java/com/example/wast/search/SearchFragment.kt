@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.wast.MovieAdapter
 import com.example.wast.R
 import com.example.wast.api.models.SccData
 import com.example.wast.databinding.FragmentSearchBinding
