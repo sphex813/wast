@@ -15,6 +15,7 @@ import com.google.android.gms.common.api.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -64,7 +65,10 @@ class CastComponent : KoinComponent {
                     CoroutineScope(Dispatchers.IO).launch {
                         localStorage.addToList(PreferenceKeys.WATCHED, media._id, castPlayListener!!::addToWatched)
                     }
-                    castPlayListener?.setPlayiedMedia(media);
+                    val title = remoteMediaClient.mediaInfo.metadata.getString(MediaMetadata.KEY_TITLE) ?: ""
+                    val subTitle = remoteMediaClient.mediaInfo.metadata.getString(MediaMetadata.KEY_SUBTITLE) ?: ""
+                    val image: String = (remoteMediaClient.mediaInfo.customData?.get("image") ?: "") as String
+                    castPlayListener?.setPlayedMedia(title, subTitle, image);
 
                     Log.d("cast", "on Success")
                 }
@@ -79,10 +83,21 @@ class CastComponent : KoinComponent {
 //        val link: String = generateFileWithSound(app, link)
         val movieMetadata = setMovieMetaData(parentData, mediaData)
 
+        val customMediaData = JSONObject().put("image", HelpUtils.getMovieImageLink(
+            let {
+                if (parentData !== null) {
+                    parentData._source.i18n_info_labels
+                } else {
+                    mediaData._source.i18n_info_labels
+                }
+            }
+        ))
+
         return MediaInfo.Builder(link)
             .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
             .setContentType("videos/mp4") //TODO pridat do Constants
             .setMetadata(movieMetadata)
+            .setCustomData(customMediaData)
             .setStreamDuration(MediaInfo.UNKNOWN_DURATION)
             .build()
     }
@@ -139,5 +154,4 @@ class CastComponent : KoinComponent {
                 ?.seek(MediaSeekOptions.Builder().setPosition(value.toLong()).build())
         }
     }
-
 }

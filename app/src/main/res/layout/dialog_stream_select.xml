@@ -23,6 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="2dp"
+        android:background="@color/background"
         tools:listitem="@layout/stream_select_item" />
 
 </layout>

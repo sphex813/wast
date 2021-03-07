@@ -34,9 +34,16 @@ class PlayFragment : Fragment() {
         seekBar1.setOnSeekBarChangeListener(null);
         myViewModel.registerProgressListener();
 
-        mainViewModel.currentlyPlaying.observe(viewLifecycleOwner, Observer {
-            myViewModel.background.postValue(HelpUtils.getMovieImageLink(it._source.i18n_info_labels))
-            myViewModel.title.postValue(HelpUtils.getTitle(it._source.info_labels.originaltitle ,it._source.i18n_info_labels))
+        mainViewModel.currentlyPlayingTitle.observe(viewLifecycleOwner, Observer {
+            myViewModel.title.postValue(it)
+        })
+
+        mainViewModel.currentlyPlayingSubTitle.observe(viewLifecycleOwner, Observer {
+            myViewModel.subTitle.postValue(it)
+        })
+
+        mainViewModel.currentlyPlayingImageLink.observe(viewLifecycleOwner, Observer {
+            myViewModel.background.postValue(it)
         })
     }
 

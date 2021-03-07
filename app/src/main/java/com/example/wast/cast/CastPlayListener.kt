@@ -4,5 +4,5 @@ import com.example.wast.api.models.SccData
 
 interface CastPlayListener {
     fun addToWatched()
-    fun setPlayiedMedia(media: SccData)
+    fun setPlayedMedia(title: String, subTitle: String, image: String)
 }

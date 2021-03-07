@@ -11,12 +11,12 @@ import org.koin.core.component.inject
 class PlayViewModel : ViewModel(), KoinComponent {
     var seekbarTouched = false
     private val cast: CastComponent by inject()
-    private val currentMedia: MutableLiveData<SccData> = MutableLiveData(null);
     val isPlaying: MutableLiveData<Boolean> = MutableLiveData(true);
     val mediaLength: MutableLiveData<Long> = MutableLiveData()
     val currentPosition: MutableLiveData<Int> = MutableLiveData(0)
     val background: MutableLiveData<String> = MutableLiveData()
     val title: MutableLiveData<String> = MutableLiveData()
+    val subTitle: MutableLiveData<String> = MutableLiveData()
 
     private val progressListener = object : ProgressListener {
         override fun onProgressUpdated(p0: Long, p1: Long) {

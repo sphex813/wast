@@ -24,7 +24,9 @@ class MainActivityViewModel(
     private val loginComponent: LoginComponent by inject()
     val menuDisabled = MutableLiveData(false)
     val watchedHistory: MutableLiveData<MutableList<String>> = MutableLiveData()
-    val currentlyPlaying: MutableLiveData<SccData> = MutableLiveData()
+    val currentlyPlayingTitle: MutableLiveData<String> = MutableLiveData()
+    val currentlyPlayingSubTitle: MutableLiveData<String> = MutableLiveData()
+    val currentlyPlayingImageLink: MutableLiveData<String> = MutableLiveData()
 
     fun setCastContext(castContext: CastContext) = cast.setCastContext(castContext)
 
@@ -46,9 +48,12 @@ class MainActivityViewModel(
                 }
             }
 
-            override fun setPlayiedMedia(media: SccData) {
-                currentlyPlaying.postValue(media)
+            override fun setPlayedMedia(title: String, subTitle: String, image: String) {
+                currentlyPlayingTitle.postValue(title)
+                currentlyPlayingSubTitle.postValue(subTitle)
+                currentlyPlayingImageLink.postValue(image)
             }
+
         })
     }
 }
